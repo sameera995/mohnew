@@ -1,0 +1,294 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container-fluid" style="margin: auto; padding: 5px 5px 5px 5px">
+
+
+  <div class="card">
+  <div class="card-header bg-info text-white"><h5>Employee Management</h5></div>
+  <div class="card-body">
+
+ <div class="row">
+  <div class="col-lg-5 col-sm-3">
+  <form [formGroup]="form">
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Name<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <input class=" form-control form-control-sm" matInput formControlName="name" #name name="name" required>
+        <mat-error *ngIf="isFieldInvalid('name')">Please insert correct Name</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Gender<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <select class="form-control form-control-sm" formControlName="gender" required>
+          <!--[compareWith]="compareGenders">-->
+            <option value="null" disabled>Select Gender</option>
+            <option *ngFor="let gender of genders" [value]="gender">
+              {{gender}}
+            </option>
+          </select>
+        <mat-error *ngIf="isFieldInvalid('gender')">Please select correct Gender</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>NIC<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+          <input class=" form-control form-control-sm " matInput formControlName="nic" required>
+          <mat-error *ngIf="isFieldInvalid('nic')">Please insert correct NIC</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Date of Birth<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <input class=" form-control form-control-sm" formControlName="dob" bsDatepicker required>
+        <mat-error *ngIf="isFieldInvalid('dob')">Please insert correct Date of Birth</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Address<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+          <input class=" form-control form-control-sm " matInput formControlName="address" required>
+        <mat-error *ngIf="isFieldInvalid('address')">Please insert correct Address</mat-error>
+        </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Email<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+          <input class=" form-control form-control-sm " type="email" matInput formControlName="email" required>
+          <mat-error *ngIf="isFieldInvalid('email')">Please insert correct Email</mat-error>
+        </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Contact<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+          <input class="form-control form-control-sm" matInput formControlName="contact" required>
+          <mat-error *ngIf="isFieldInvalid('contact')">Please insert correct Contact No</mat-error>
+        </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Civil Status<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <select class="form-control form-control-sm" formControlName="civilStatus" required>
+          <!--[compareWith]="compareCivilStatus">-->
+          <option value="null" disabled>Select Civil Status</option>
+            <option *ngFor="let civilStatus of civilStatus" [value]="civilStatus">
+              {{civilStatus}}
+            </option>
+          </select>
+        <mat-error *ngIf="isFieldInvalid('civilStatus')">Please select correct Civil Status</mat-error>
+       </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Designation<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <select class="form-control form-control-sm" formControlName="designation" required>
+          <!--[compareWith]="compareDesignations">-->
+            <option value="null" disabled>Select Designation</option>
+            <option *ngFor="let designation of designations" [value]="designation">
+              {{designation}}
+            </option>
+        </select>
+        <mat-error *ngIf="isFieldInvalid('designation')">Please select correct Designation</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Assign Date<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <input class=" form-control form-control-sm" formControlName="assignDate" required bsDatepicker>
+        <mat-error *ngIf="isFieldInvalid('assignDate')">Please insert correct Assign Date</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-3 col-sm-12">
+        <label>Employee Status<span style="color: red">*</span></label>
+      </div>
+      <div class="col-lg-9 col-sm-12">
+        <input type="radio" value="1" name="employeeStatus" formControlName="employeeStatus"> Active<br>
+        <input type="radio" value="0" name="employeeStatus" formControlName="employeeStatus"> Inactive
+        <mat-error *ngIf="isFieldInvalid('employeeStatus')">Please select correct Employee Status</mat-error>
+      </div>
+
+    </div><br>
+
+
+
+    <div class="row">
+
+      <div class="col-lg-4">
+        <button type="reset" class="btn btn-outline-dark" style="width: 100%">Clear</button>
+      </div>
+
+      <div class="col-lg-4">
+        <button type="reset" (click)="onSubmit()" class="btn btn-outline-warning" style="width: 100%">Update</button>
+      </div>
+
+      <div class="col-lg-4">
+        <button type="button" (click)="onSubmit()" class="btn btn-outline-primary" style="width: 100%">Add</button>
+      </div>
+
+
+
+    </div><br><br>
+
+  </form>
+  </div>
+
+  <div class="col-lg-7 container">
+
+
+<div class="card">
+  <div class="card-body">
+
+
+    <!--search ============================================================================-->
+        <form [formGroup]="searchForm">
+          <div class="row">
+          <div class="col-lg-4">
+
+              <input class="form-control form-control-sm" formControlName="Name" placeholder="Name" (keyup.enter)="search()">
+             </div>
+
+
+
+
+        <div class="col-lg-4">
+
+              <input class="form-control form-control-sm" placeholder="NIC" formControlName="nic" (keyup.enter)="search()">
+            </div>
+
+
+        <div class="col-lg-4">
+          <div class="btn-group">
+            <button class="btn btn-outline-success" (click)="search()">Search</button>
+            <button class="btn btn-outline-dark">Cancel</button>
+          </div>
+
+        </div>
+
+
+      </div>
+        </form><br>
+
+    <!-- Table ==================================================-->
+      <div class="row">
+        <div class="col-lg-12" style="margin: auto">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+
+
+                <td>Name</td>
+                <td>NIC</td>
+                <td>Gender</td>
+                <td>Address</td>
+                <td>E-mail</td>
+                <td>Contact</td>
+                <td>Action</td>
+
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let employee of employees" (click)="fillForm(employee)">
+
+
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.nic }}</td>
+                <td>{{ employee.gender}}</td>
+                <td>{{ employee.address }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.contact }}</td>
+                <td><div class="btn-group">
+                    <button type="button" (click)="delete(employee.id)" class="btn btn-outline-danger">Delete</button>
+                    </div>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div></div>
+</div>
+</div>
+</div>
+  </div>
+  </div>
+</div>
+</body>
+</html>

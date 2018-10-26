@@ -1,0 +1,219 @@
+<html>
+
+<head>
+
+</head><body>
+
+<div class="container-fluid" style="padding: 5px 5px 5px 5px">
+  <div class="card">
+    <div class="card-header bg-info text-white"><h5>Clinic</h5></div>
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-lg-5">
+
+
+
+
+
+<!--====================== Search ================================================-->
+
+
+            <div class="form-group container">
+              <form [formGroup]="searchForm">
+                  <div class="row">
+                    <div class="col-lg-4">
+
+                      <input class="form-control form-control-sm" formControlName="Name" placeholder="Name" (keyup.enter)="search()">
+                    </div>
+
+                    <div class="col-lg-4">
+
+                      <input class="form-control form-control-sm" placeholder="Clinic Type" formControlName="clinicType" (keyup.enter)="search()">
+                    </div>
+
+
+                    <div class="col-lg-4">
+                      <div class="btn-group">
+                        <button class="btn btn-outline-success" (click)="search()">Search</button>
+                        <button class="btn btn-outline-dark">Cancel</button>
+                      </div>
+                    </div>
+                    </div><br>
+              </form>
+            </div><br>
+
+<!-- card ===============================================================================-->
+
+              <div class="row">
+                <div class="col-lg-10 offset-1">
+                  <div class="card bg-warning text-dark">
+                  <div class="card-body">
+                    <label>Name</label>  <br>
+                    <label>Age</label>  <br>
+                    <label>Area</label>  <br>
+                    <label>Address</label>  <br>
+                    <label>Contact</label>  <br>
+                  </div>
+                </div>
+                </div>
+
+              </div><br>
+
+
+<!-- form ========================================================================================-->
+
+              <form [formGroup]="clinicForm">
+                <div class="form-group">
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Height(m)</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="number" formControlName="height" id="height" class=" form-control form-control-sm"><br>
+                </div>
+
+              </div>
+
+
+
+              <div class="row">
+
+                 <div class="col-lg-3">
+                   <label>Weight(Kg)</label>
+                 </div>
+                 <div class="col-lg-9">
+                   <input type="number" formControlName="weight" id="weight" class=" form-control form-control-sm"><br>
+                 </div>
+
+              </div>
+
+
+
+              <div class="row">
+
+                <div class="col-lg-12">
+
+                  <div class="row">
+                  <div class="col-lg-3">
+                  <label>Vaccination</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="vaccination" formControlName="vaccination" class="form-control form-control-sm">
+                    <option value="null" disabled>Select Clinic Type</option>
+                    <option *ngFor="let clinicType of clinicTypes" [value]="clinicType">
+                      {{clinicType}}
+                    </option>
+                  </select><br>
+                </div>
+                  </div>
+
+                <div class="row">
+                  <div class="col-lg-9 offset-3">
+                    <input type="text" formControlName="vaccination" placeholder="Type if not exists" class=" form-control form-control-sm"><br>
+                  </div>
+                </div>
+
+                </div>
+
+              </div>
+
+
+                  <div class="row">
+
+                    <div class="col-lg-3">
+                      <label>Thriposha Issue</label>
+                    </div>
+                    <div class="col-lg-9">
+                      <input type="checkbox" value="Issued" name="thriposha" formControlName="thriposha"> Issued<br>
+                     </div>
+
+                  </div><br>
+
+
+              <div class="row">
+
+                <div class="col-lg-4 offset-4">
+                  <button type="reset" class="btn btn-outline-dark" style="width: 100%">Clear</button>
+                </div>
+                <div class="col-lg-4">
+                  <button type="button" (click)="onSubmit()" class="btn btn-outline-primary" style="width: 100%">Add</button>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+
+<!--=========== Chart ==============================================================-->
+        <div class="col-lg-7">
+
+
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-header bg-warning text-dark">Weight Chart</div>
+                <div class="card-body">
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+      </div>
+
+<!--========== table ==============================================================-->
+
+
+
+
+
+
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <div class="row">
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <td>Clinic Name</td>
+              <td>Clinic Type</td>
+              <td>Person Type</td>
+              <td>Description</td>
+              <td>Action</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let clinic of clinics" (click)="fillForm(clinic)">
+
+
+              <td>{{ clinic.name }}</td>
+              <td>{{ clinic.clinicType }}</td>
+              <td>{{ clinic.personType}}</td>
+              <td>{{ clinic.description }}</td>
+              <td><div class="btn-group">
+                <button type="button" (click)="delete(clinic.id)" class="btn btn-outline-danger">Delete</button>
+              </div>
+              </td>
+
+            </tr>
+            </tbody>
+          </table>
+        </div></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

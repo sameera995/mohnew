@@ -1,0 +1,49 @@
+footer {
+  background-color:dimgray;
+  width: 100%;
+  bottom: 0;
+  font-weight: lighter;
+  color: white;
+}
+.footerHeader{
+  width:100%;
+  padding:1em;
+  background-color:black;
+  text-align:center;
+  color:white;
+}
+footer h3{
+  font-weight:lighter;
+}
+footer ul{
+  padding-left:5px;
+  list-style:none;
+}
+footer p{
+  text-align : justify;
+  font-size : 12px;
+}
+footer iframe {
+  width:100%;
+  position:relative;
+  height:170px;
+}
+.sm{
+  list-style:none;
+  overflow:auto;
+}
+.sm li {
+  display: inline;
+  padding:5px;
+  float:left;
+}
+.sm li a img {
+  width:32px;
+}
+#footerbotm{
+  width:100%;
+  padding:1em;
+  background-color:black;
+  text-align:center;
+  color:white;
+}

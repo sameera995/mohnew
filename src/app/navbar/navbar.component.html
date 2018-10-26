@@ -1,0 +1,68 @@
+<nav *ngIf="isLoggedIn$ | async as isLoggedIn" class="navbar navbar-expand-lg navbar-dark" style="background-color: #000fab;" >
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbr">
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/main" style="color: white">Home</a>
+      </li>
+      <!--========================== Dropdown ===========================================-->
+      <li class="btn-group" dropdown>
+            <span dropdown>
+      <a class="nav-item nav-link" id="arealink" dropdownToggle (click)="false"
+         aria-controls="basic-link-dropdown" style="color: white" routerLink="area">Area</a>
+        </span>
+      </li>
+
+      <li class="btn-group" dropdown>
+
+        <span dropdown>
+      <a class="nav-item nav-link" id="emplink" dropdownToggle (click)="false"
+         aria-controls="basic-link-dropdown" style="color: white" routerLink="employee">Employee</a>
+      <!--<ul id="employeedropdown" *dropdownMenu class="dropdown-menu"-->
+          <!--role="menu" aria-labelledby="basic-link">-->
+            <!--<li role="menuitem"><a class="dropdown-item" routerLink="employee">Employee</a></li>-->
+        <!--<li *ngFor="let choice of items">-->
+          <!--<a class="dropdown-item" href="#">{{choice}}</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    </span>
+       <!--<a><button mat-button [matMenuTriggerFor]="menu" class="nav-link" aria-controls="dropdown-basic">Employee</button></a>-->
+        <!--<mat-menu #menu="matMenu">-->
+          <!--<button mat-menu-item routerLink="employee">Item 1</button>-->
+          <!--<button mat-menu-item>Item 2</button>-->
+        <!--</mat-menu>-->
+      </li>
+
+      <li class="btn-group" dropdown>
+              <span dropdown (onShown)="onShown()" (onHidden)="onHidden()" (isOpenChange)="isOpenChange()">
+      <a class="nav-item nav-link" id="cliniclink" dropdownToggle (click)="false"
+         aria-controls="basic-link-dropdown" style="color: white" routerLink="#">Clinic</a>
+      <ul id="clinicdropdown" *dropdownMenu class="dropdown-menu"
+          role="menu" aria-labelledby="basic-link">
+            <li role="menuitem"><a class="dropdown-item" routerLink="cliniccr">Clinic Creation</a></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink="clinicalloc">Clinic Allocation</a></li>
+            <li role="menuitem"><a class="dropdown-item" routerLink="clinic">Clinic</a></li>
+      </ul>
+    </span>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="person" style="color: white">Person</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" routerLink="user" style="color: white">User</a>
+      </li>
+
+    </ul>
+
+    <form class="form-inline my-2 my-lg-0">
+      <a><button class="btn btn-outline-light my-2 my-sm-0" ng-model="hide" (click)="onLogout()" *ngIf="isLoggedIn">Logout</button></a>
+    </form>
+  </div>
+</nav>
+

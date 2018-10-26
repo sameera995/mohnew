@@ -1,0 +1,187 @@
+<html>
+
+<head>
+
+</head><body>
+
+<div class="container-fluid" style="padding: 5px 5px 5px 5px">
+  <div class="card">
+    <div class="card-header bg-info text-white"><h5>Clinic Allocation</h5></div>
+    <div class="card-body">
+
+      <div class="row">
+        <div class="col-lg-5">
+          <!--form-->
+          <form [formGroup]="clinicAllocForm">
+            <div class="form-group">
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Select Clinc</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="clinic" formControlName="clinic" class="form-control form-control-sm">
+                    <option value="null" disabled>Select Clinic</option>
+                    <option *ngFor="let clinic of clinic" [value]="clinic">
+                      {{clinic}}
+                    </option>
+                  </select><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please select Clinic</mat-error>
+              </div>
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Select Area</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="area" formControlName="area" class="form-control form-control-sm">
+                    <option value="null" disabled>Select Area</option>
+                    <option *ngFor="let area of area" [value]="area">
+                      {{area}}
+                    </option>
+                  </select><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please insert Area</mat-error>
+              </div>
+
+              <div class="row">
+
+                <div class="col-lg-3 col-sm-12">
+                  <label>Date<span style="color: red">*</span></label>
+                </div>
+                <div class="col-lg-9 col-sm-12">
+                  <input class=" form-control form-control-sm" formControlName="clinicdate" bsDatepicker required>
+                  <mat-error *ngIf="isFieldInvalid('clinicdate')">Please insert correct Date of Birth</mat-error>
+                  <br>
+                </div>
+
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label for="time">Time</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="time" class="form-control form-control-sm" formControlName="time">
+
+                  </select><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please insert Time</mat-error>
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label for="place">Place</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="place" class="form-control form-control-sm" formControlName="place">
+
+                  </select><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please Place</mat-error>
+              </div>
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Employees</label>
+                </div>
+                <div class="col-lg-9">
+                  <select id="employee" formControlName="employee" class="form-control form-control-sm">
+                    <option value="null" disabled>Select Employee</option>
+                    <option *ngFor="let employee of employee" [value]="employee">
+                      {{employee}}
+                    </option>
+                  </select><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please Select Employees</mat-error>
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Description</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="text" formControlName="description" id="description" class=" form-control form-control-sm"><br>
+                </div>
+                <mat-error *ngIf="isFieldInvalid('clinicdate')">Please insert Description</mat-error>
+              </div>
+
+
+
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <button type="reset" class="btn btn-outline-dark" style="width: 100%">Clear</button>
+                </div>
+                <div class="col-lg-4">
+                  <button type="button" (click)="onSubmit()" class="btn btn-outline-warning" style="width: 100%">Update</button>
+                </div>
+                <div class="col-lg-4">
+                  <button type="button" (click)="onSubmit()" class="btn btn-outline-primary" style="width: 100%">Add</button>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+
+
+        <div class="col-lg-7" id="xxx">
+
+          <!-- Search ================================================-->
+          <form formGroup="searchForm">
+            <div class="row">
+              <div class="col-lg-4">
+
+                <input class="form-control form-control-sm" formControlName="Name" placeholder="Name" (keyup.enter)="search()">
+              </div>
+
+              <div class="col-lg-4">
+
+                <input class="form-control form-control-sm" placeholder="Clinic Type" formControlName="clinicType" (keyup.enter)="search()">
+              </div>
+
+
+              <div class="col-lg-4">
+                <div class="btn-group">
+                  <button class="btn btn-outline-success" (click)="search()">Search</button>
+                  <button class="btn btn-outline-dark">Cancel</button>
+                </div>
+
+              </div>
+
+
+            </div>
+          </form><br>
+
+          <!--========== table ======================-->
+
+
+
+          <div class="row">
+            <table class="table table-hover">
+
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
