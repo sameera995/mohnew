@@ -54,7 +54,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { ModalComponent } from './modal/modal.component';
-import {BsDatepickerModule, BsDropdownModule, CarouselModule, TabsModule} from "ngx-bootstrap";
+import {
+  BsDatepickerModule,
+  BsDropdownModule,
+  CarouselModule, ModalModule,
+  TabsModule,
+  TimepickerModule
+} from "ngx-bootstrap";
 import { AboutComponent } from './home/about/about.component';
 import { AreaComponent } from './area/area.component';
 import {AppRoutingModule} from "./app-routing.module";
@@ -105,7 +111,7 @@ import { CampaignComponent } from './campaign/campaign.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule
   ],
   declarations: [],
 })
@@ -144,7 +150,9 @@ export class DemoMaterialModule {}
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    TimepickerModule.forRoot(),
+    ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

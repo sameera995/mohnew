@@ -135,12 +135,12 @@
                 <label>Person Type<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <select class="form-control form-control-sm" formControlName="persontype" required>
-                  <!--[compareWith]="compareDesignations">-->
-                  <option [ngValue]="null" disabled>Select Person Type</option>
-                  <option [ngValue]="baby">Baby</option>
-                </select>
-                <mat-error *ngIf="isFieldInvalid('persontype')">Please select correct Designation</mat-error>
+                <mat-select formControlName="personType" multiple class="form-control form-control-sm">
+                  <mat-option *ngFor="let personType of personTypes" [value]="personType">
+                    {{personType}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isFieldInvalid('personType')">Please Select Employees</mat-error><br><br>
               </div>
 
             </div><br>
@@ -178,9 +178,11 @@
                 <label>Person Status<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input type="radio" value="1" name="personStatus" formControlName="personStatus"> Active<br>
-                <input type="radio" value="0" name="personStatus" formControlName="personStatus"> Inactive
-                <mat-error *ngIf="isFieldInvalid('personStatus')">Please select correct Person Status</mat-error>
+                <mat-select formControlName="personStatus" multiple class="form-control form-control-sm">
+                  <mat-option>Active</mat-option>
+                  <mat-option>Inactive</mat-option>
+                </mat-select>
+                <mat-error *ngIf="isFieldInvalid('personStatus')">Please Select Employees</mat-error><br><br>
               </div>
 
             </div><br>
@@ -216,7 +218,7 @@
 
 
               <!--search ============================================================================-->
-              <form formGroup="searchForm">
+              <form [formGroup]="searchForm">
                 <div class="row">
                   <div class="col-lg-4">
 

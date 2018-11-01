@@ -17,7 +17,11 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.baseUrl}`);
   }
 
-  search(employee: { sbName: string, sbNic: string }): Observable<Employee[]> {
+  findByArea(area){
+    return this.http.get<Employee[]>(`${this.baseUrl}`+{area});
+  }
+
+  search(employee: { name: string, nic: string }): Observable<Employee[]> {
     return this.http.put<Employee[]>(`http://localhost:8080/employees/search`, employee)
       .pipe(
         delay(0)
