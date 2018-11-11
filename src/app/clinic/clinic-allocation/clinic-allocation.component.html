@@ -2,7 +2,8 @@
 
 <head>
 
-</head><body>
+</head>
+<body>
 
 <div class="container-fluid" style="padding: 5px 5px 5px 5px">
   <div class="card">
@@ -27,7 +28,8 @@
                       {{clinicCreation.name}}
                     </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('clinicCreation')">Please select Clinic</mat-error><br><br>
+                  <mat-error *ngIf="isFieldInvalid('clinicCreation')">Please select Clinic</mat-error>
+                  <br><br>
                 </div>
               </div>
 
@@ -43,7 +45,8 @@
                       {{area.name}}
                     </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('area')">Please insert Area</mat-error><br><br>
+                  <mat-error *ngIf="isFieldInvalid('area')">Please insert Area</mat-error>
+                  <br><br>
                 </div>
               </div>
 
@@ -80,7 +83,8 @@
                 </div>
                 <div class="col-lg-9">
                   <input type="text" id="place" class="form-control form-control-sm" formControlName="place">
-                  <mat-error *ngIf="isFieldInvalid('place')">Please input Place</mat-error><br>
+                  <mat-error *ngIf="isFieldInvalid('place')">Please input Place</mat-error>
+                  <br>
                 </div>
               </div>
 
@@ -91,18 +95,20 @@
                 </div>
                 <div class="col-lg-9">
                   <!--<select id="employee" formControlName="employee" class="form-control form-control-sm">-->
-                    <!--<option value="null" disabled>Select Employee</option>-->
-                    <!--<option *ngFor="let employee of employees" [ngValue]="employee">-->
-                      <!--{{employee.name}}-->
-                    <!--</option>-->
+                  <!--<option value="null" disabled>Select Employee</option>-->
+                  <!--<option *ngFor="let employee of employees" [ngValue]="employee">-->
+                  <!--{{employee.name}}-->
+                  <!--</option>-->
                   <!--</select><br>-->
 
-                    <mat-select formControlName="employee" multiple class="form-control form-control-sm">
-                      <mat-option *ngFor="let employee of employees" [value]="employee">
-                        {{employee.name}}
-                      </mat-option>
-                    </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('employee')">Please Select Employees</mat-error><br><br>
+                  <mat-select formControlName="employee" multiple class="form-control form-control-sm"
+                      [compareWith]="compareEmployees">
+                    <mat-option *ngFor="let employee of employees" [value]="employee">
+                      {{employee.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="isFieldInvalid('employee')">Please Select Employees</mat-error>
+                  <br><br>
                 </div>
               </div>
 
@@ -113,23 +119,30 @@
                   <label>Description</label>
                 </div>
                 <div class="col-lg-9">
-                  <input type="text" formControlName="description" id="description" class=" form-control form-control-sm">
-                  <mat-error *ngIf="isFieldInvalid('description')">Please insert Description</mat-error><br>
+                  <input type="text" formControlName="description" id="description"
+                         class=" form-control form-control-sm">
+                  <mat-error *ngIf="isFieldInvalid('description')">Please insert Description</mat-error>
+                  <br>
                 </div>
               </div>
-
 
 
               <div class="row">
 
                 <div class="col-lg-4">
-                  <button type="reset" class="btn btn-outline-dark" style="width: 100%" (click)="openModal(clear)">Clear</button>
+                  <button type="button" class="btn btn-outline-dark" style="width: 100%" (click)="openModal(clear)">
+                    Clear
+                  </button>
                 </div>
                 <div class="col-lg-4">
-                  <button type="button" (click)="openModal(update)" class="btn btn-outline-warning" style="width: 100%">Update</button>
+                  <button type="button" (click)="openModalSave(update)" class="btn btn-outline-warning"
+                          style="width: 100%">Update
+                  </button>
                 </div>
                 <div class="col-lg-4">
-                  <button type="button" (click)="openModal(save)" class="btn btn-outline-primary" style="width: 100%">Add</button>
+                  <button type="button" (click)="openModalSave(save)" class="btn btn-outline-primary"
+                          style="width: 100%">Add
+                  </button>
                 </div>
 
               </div>
@@ -139,66 +152,69 @@
         </div>
 
 
-
         <div class="col-lg-7">
 
           <!-- Search ================================================-->
 
           <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-lg-4">
-                <input class="form-control form-control-sm" formControlName="clinicCreation" placeholder="Clinic Name" (keyup.enter)="search()">
+              <div class="col-lg-4" formGroupName="clinicCreation">
+                <input class="form-control form-control-sm" formControlName="name" placeholder="Clinic Name"
+                       (keyup.enter)="search()">
               </div>
 
-              <div class="col-lg-4">
-                <input class="form-control form-control-sm" formControlName="area" placeholder="Area" (keyup.enter)="search()">
+              <div class="col-lg-4" formGroupName="area">
+                <input class="form-control form-control-sm" formControlName="name" placeholder="Area"
+                       (keyup.enter)="search()">
               </div>
 
 
               <div class="col-lg-4">
                 <div class="btn-group">
                   <button class="btn btn-outline-success" (click)="search()">Search</button>
-                  <button class="btn btn-outline-dark">Cancel</button>
+                  <button class="btn btn-outline-dark" (click)="onSearchClear()">Cancel</button>
                 </div>
 
               </div>
 
 
             </div>
-          </form><br>
+          </form>
+          <br>
 
           <!--========== table ======================-->
 
           <div class="row">
-            <table class="table table-bordered table-hover table-sm mat-elevation-z8" mat-table [dataSource]="dataSource">
+            <table class="table table-bordered table-hover table-sm mat-elevation-z8" mat-table
+                   [dataSource]="dataSource">
 
               <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> <h6>Name</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Name</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.clinicCreation.name}}</td>
               </ng-container>
 
               <ng-container matColumnDef="area">
-                <th mat-header-cell *matHeaderCellDef> <h6>Area</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Area</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.area.name}}</td>
               </ng-container>
 
               <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef> <h6>Date</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Date</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.date}}</td>
               </ng-container>
 
               <ng-container matColumnDef="time">
-                <th mat-header-cell *matHeaderCellDef> <h6>Time</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Time</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.time}}</td>
               </ng-container>
 
               <ng-container matColumnDef="place">
-                <th mat-header-cell *matHeaderCellDef> <h6>Place</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Place</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.place}}</td>
               </ng-container>
 
               <ng-container matColumnDef="employee">
-                <th mat-header-cell *matHeaderCellDef> <h6>Employee</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Employee</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">
                   <!--<span *ngFor="let employee of clinicAllocation">-->
                   <!--{{employee.name}}</span>-->
@@ -206,10 +222,11 @@
               </ng-container>
 
               <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> <h6>Action</h6> </th>
+                <th mat-header-cell *matHeaderCellDef><h6>Action</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">
                   <div class="btn-group btn-group-sm special">
-                    <button type="button" class="btn btn-outline-success" (click)="fillForm(clinicAllocation)">Select</button>
+                    <button type="button" class="btn btn-outline-success" (click)="fillForm(clinicAllocation)">Select
+                    </button>
                     <button type="button" class="btn btn-outline-danger" (click)="openModal(delete)">Delete</button>
                   </div>
 
@@ -225,8 +242,11 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-8 offset-2 btn-group">
-                          <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
-                          <button type="button" class="btn btn-primary" (click)="onDelete(clinicAllocation.id)" style="width: 100%">Yes</button>
+                          <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No
+                          </button>
+                          <button type="button" class="btn btn-primary" (click)="onDelete(clinicAllocation.id)"
+                                  style="width: 100%">Yes
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -303,6 +323,26 @@
     </div>
   </div>
 </ng-template>
+
+<!--<ng-template #error>-->
+<!--<div class="modal-header">-->
+<!--<h4 class="modal-title pull-left">Confirm..!</h4>-->
+<!--</div>-->
+<!--<div class="modal-body text-center">-->
+<!--<div class="row">-->
+<!--<div class="col-lg-12">-->
+<!--<p>There are some errors in this form..?</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="row">-->
+<!--<div class="col-lg-8 offset-2 btn-group">-->
+<!--<button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>-->
+<!--<button type="button" class="btn btn-primary" (click)="onClear()" style="width: 100%">Yes</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</ng-template>-->
+
 </body>
 </html>
 

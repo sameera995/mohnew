@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {ClinicCreation} from "../clinic/clinic-creation/CliinicCreation";
+import {ClinicCreation} from "../clinic/clinic-creation/ClinicCreation";
 
 @Injectable({
   providedIn: 'root'

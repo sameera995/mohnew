@@ -1,6 +1,6 @@
 import {Employee} from "../../employee/Employee";
 import {Area} from "../../area/Area";
-import {ClinicCreation} from "../clinic-creation/CliinicCreation";
+import {ClinicCreation} from "../clinic-creation/ClinicCreation";
 
 export interface ClinicAllocation {
   id:string;

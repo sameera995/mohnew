@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {AuthService} from "../service/auth.service";
+import {AuthenticationService} from "../service/authentication.service";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -10,42 +12,44 @@ import {AuthService} from "../service/auth.service";
 })
 export class LoginComponent implements OnInit {
 
-  form:FormGroup;
-  private formSubmitAttempt: boolean;
+  invalidLogin: boolean = false;
+  message: string;
+  remainingAttempts: number = 3;
+  remainingAttemptMsg: string;
 
-  constructor(
-    private router:Router,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+  @ViewChild('username') username: ElementRef;
 
-
-
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      'username':[null,Validators.required],
-      'password':[null,Validators.required]
-    });
+  constructor(private authService: AuthenticationService, private router: Router) {
   }
 
-
-
-  isFieldInvalid(field: string) {
-    return (
-      (!this.form.get(field).valid && this.form.get(field).touched) ||
-      (this.form.get(field).untouched && this.formSubmitAttempt)
+  logIn(form: NgForm) {
+    this.authService.logIn(form.value.username, form.value.password).subscribe(
+      (value) => this.router.navigate(["/home"]),
+      (error: HttpErrorResponse) => {
+        this.invalidLogin = true;
+        this.message = error.error.message;
+        if (this.message === "Your account credentials is expired!!!")
+          setTimeout(() => {
+            this.router.navigate(["/changePassword", form.value.username]);
+          }, 2000);
+        else if (this.message === "Your password is wrong!!!") {
+          if (this.remainingAttempts === 1) {
+            this.authService.lockAccount(form.value.username).subscribe(response => {
+              this.remainingAttemptMsg = null;
+              this.message = response.message;
+              this.remainingAttempts = 3;
+              return;
+            });
+          }
+          this.remainingAttempts -= 1;
+          this.remainingAttemptMsg = `You have only ${this.remainingAttempts} attempts left`;
+        }
+      }
     );
   }
 
-
-
-  onSubmit(){
-    if (this.form.valid) {
-      this.authService.login(this.form.value);
-    }
-    this.formSubmitAttempt = true;
+  ngOnInit() {
+    this.username.nativeElement.focus();
   }
-
-
 
 }

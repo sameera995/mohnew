@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ClinicCreation} from "./CliinicCreation";
+import {ClinicCreation} from "./ClinicCreation";
 import {ClinicCreationService} from "../../service/clinic-creation.service";
 import {PersonTypeService} from "../../service/person-type.service";
 import {Area} from "../../area/Area";
@@ -34,6 +34,7 @@ export class ClinicCreationComponent implements OnInit {
   ngOnInit() {
 
     this.createForm();
+    this.clinicCreationService.findAll().subscribe(clinicCreation => this.loadData(clinicCreation));
     this.loadClinicType();
     this.loadPersonType();
     

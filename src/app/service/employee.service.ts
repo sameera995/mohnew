@@ -17,8 +17,8 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.baseUrl}`);
   }
 
-  findByArea(area){
-    return this.http.get<Employee[]>(`${this.baseUrl}`+{area});
+  findByArea(area:string){
+    return this.http.get<Employee[]>(`${this.baseUrl}/${area}`);
   }
 
   search(employee: { name: string, nic: string }): Observable<Employee[]> {

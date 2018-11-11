@@ -20,13 +20,12 @@
                 <label>Name<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class=" form-control form-control-sm" matInput formControlName="name" #name name="name" required>
+                <input class=" form-control form-control-sm" formControlName="name" required>
                 <mat-error *ngIf="isFieldInvalid('name')">Please insert correct Name</mat-error>
               </div>
 
-            </div><br>
-
-
+            </div>
+            <br>
 
 
             <div class="row">
@@ -35,17 +34,17 @@
                 <label>Gender<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <select class="form-control form-control-sm" formControlName="gender" required>
-                  <!--[compareWith]="compareGenders">-->
-                  <option value="null" disabled>Select Gender</option>
-                  <option *ngFor="let gender of genders" [value]="gender">
+                <mat-select formControlName="gender" class="form-control form-control-sm">
+                  <mat-option *ngFor="let gender of genders" [value]="gender">
                     {{gender}}
-                  </option>
-                </select>
-                <mat-error *ngIf="isFieldInvalid('gender')">Please select correct Gender</mat-error>
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isFieldInvalid('gender')">Please Select Employees</mat-error>
+                <br>
               </div>
 
-            </div><br>
+            </div>
+            <br>
 
 
             <div class="row">
@@ -58,8 +57,8 @@
                 <mat-error *ngIf="isFieldInvalid('dob')">Please insert correct Date of Birth</mat-error>
               </div>
 
-            </div><br>
-
+            </div>
+            <br>
 
 
             <div class="row">
@@ -68,12 +67,12 @@
                 <label>Address<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class=" form-control form-control-sm " matInput formControlName="address" required>
+                <input class=" form-control form-control-sm " formControlName="address" required>
                 <mat-error *ngIf="isFieldInvalid('address')">Please insert correct Address</mat-error>
               </div>
 
-            </div><br>
-
+            </div>
+            <br>
 
 
             <div class="row">
@@ -82,12 +81,12 @@
                 <label>Contact<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class="form-control form-control-sm" matInput formControlName="contact" required>
+                <input class="form-control form-control-sm" formControlName="contact" required>
                 <mat-error *ngIf="isFieldInvalid('contact')">Please insert correct Contact No</mat-error>
               </div>
 
-            </div><br>
-
+            </div>
+            <br>
 
 
             <div class="row">
@@ -96,37 +95,37 @@
                 <label>PHI Area<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <select class="form-control form-control-sm" formControlName="phiarea" required>
+                <mat-select class="form-control form-control-sm" multiple formControlName="area" placeholder="Select Area">
                   <!--[compareWith]="compareCivilStatus">-->
-                  <option value="null" disabled>Select PHI Area</option>
-                  <option *ngFor="let phiarea of phiarea" [value]="phiarea">
-                    {{phiarea}}
-                  </option>
-                </select>
-                <mat-error *ngIf="isFieldInvalid('phiarea')">Please select correct Civil Status</mat-error>
+                  <mat-option *ngFor="let area of areas" [value]="area">
+                    {{area.name}} - {{area.areaType}}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="isFieldInvalid('area')">Please select correct Civil Status</mat-error>
               </div>
 
-            </div><br>
+            </div>
+            <br>
 
 
+            <!--<div class="row">-->
 
-            <div class="row">
+              <!--<div class="col-lg-3 col-sm-12">-->
+                <!--<label>PHM Area<span style="color: red">*</span></label>-->
+              <!--</div>-->
+              <!--<div class="col-lg-9 col-sm-12">-->
+                <!--<mat-select class="form-control form-control-sm" formControlName="phmarea" required>-->
+                  <!--&lt;!&ndash;[compareWith]="compareDesignations">&ndash;&gt;-->
+                  <!--<mat-option value="null" disabled>Select PHM Area</mat-option>-->
+                  <!--<mat-option *ngFor="let phmArea of phmareas" [value]="phmArea">-->
+                    <!--{{phmArea.name}}-->
+                  <!--</mat-option>-->
+                <!--</mat-select>-->
+                <!--<mat-error *ngIf="isFieldInvalid('phmArea')">Please select correct Designation</mat-error>-->
+              <!--</div>-->
 
-              <div class="col-lg-3 col-sm-12">
-                <label>PHM Area<span style="color: red">*</span></label>
-              </div>
-              <div class="col-lg-9 col-sm-12">
-                <select class="form-control form-control-sm" formControlName="phmarea" required>
-                  <!--[compareWith]="compareDesignations">-->
-                  <option value="null" disabled>Select PHM Area</option>
-                  <option *ngFor="let phmarea of phmarea" [value]="phmarea">
-                    {{phmarea}}
-                  </option>
-                </select>
-                <mat-error *ngIf="isFieldInvalid('phmarea')">Please select correct Designation</mat-error>
-              </div>
-
-            </div><br>
+            <!--</div>-->
+            <!--<br>-->
 
 
             <div class="row">
@@ -135,41 +134,55 @@
                 <label>Person Type<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <mat-select formControlName="personType" multiple class="form-control form-control-sm">
+                <mat-select formControlName="personType" class="form-control form-control-sm">
                   <mat-option *ngFor="let personType of personTypes" [value]="personType">
                     {{personType}}
                   </mat-option>
                 </mat-select>
-                <mat-error *ngIf="isFieldInvalid('personType')">Please Select Employees</mat-error><br><br>
+                <mat-error *ngIf="isFieldInvalid('personType')">Please Select Employees</mat-error>
               </div>
 
-            </div><br>
+            </div>
+            <br>
 
 
-            <div class="row" hidden>
+            <div class="row">
 
               <div class="col-lg-3 col-sm-12">
-                <label>Father's Name<span style="color: red">*</span></label>
+                <label>Parent's Name<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class="form-control form-control-sm" matInput formControlName="fathername" required>
-                <mat-error *ngIf="isFieldInvalid('fathername')">Please insert correct Contact No</mat-error>
+                <input class="form-control form-control-sm" formControlName="parentName" required>
+                <mat-error *ngIf="isFieldInvalid('parentName')">Please insert correct Contact No</mat-error>
               </div>
 
-            </div><br>
+            </div>
 
 
-            <div class="row" hidden>
+            <div class="row">
 
               <div class="col-lg-3 col-sm-12">
-                <label>Mother's Name<span style="color: red">*</span></label>
+                <label>Parent's Occupation<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class="form-control form-control-sm" matInput formControlName="mothername" required>
-                <mat-error *ngIf="isFieldInvalid('contact')">Please insert correct Contact No</mat-error>
+                <input class="form-control form-control-sm" formControlName="parentOccupation" required>
+                <mat-error *ngIf="isFieldInvalid('parentOccupation')">Please insert correct Contact No</mat-error>
               </div>
 
-            </div><br>
+            </div>
+
+
+            <div class="row">
+
+              <div class="col-lg-3 col-sm-12">
+                <label>Number of Siblings<span style="color: red">*</span></label>
+              </div>
+              <div class="col-lg-9 col-sm-12">
+                <input class="form-control form-control-sm" formControlName="numberOfSiblings" required>
+                <mat-error *ngIf="isFieldInvalid('numberOfSiblings')">Please insert correct Contact No</mat-error>
+              </div>
+
+            </div>
 
 
             <div class="row">
@@ -178,34 +191,39 @@
                 <label>Person Status<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <mat-select formControlName="personStatus" multiple class="form-control form-control-sm">
-                  <mat-option>Active</mat-option>
-                  <mat-option>Inactive</mat-option>
+                <mat-select formControlName="personStatus" [(ngModel)]="selected" class="form-control form-control-sm">
+                  <mat-option ngValue="Active" selected>Active</mat-option>
+                  <mat-option ngValue="Inactive">Inactive</mat-option>
                 </mat-select>
-                <mat-error *ngIf="isFieldInvalid('personStatus')">Please Select Employees</mat-error><br><br>
+                <mat-error *ngIf="isFieldInvalid('personStatus')">Please Select Employees</mat-error>
               </div>
 
-            </div><br>
-
+            </div>
+            <br>
 
 
             <div class="row">
 
               <div class="col-lg-4">
-                <button type="reset" class="btn btn-outline-dark" style="width: 100%">Clear</button>
+                <button type="reset" class="btn btn-outline-dark" style="width: 100%" (click)="openModal(clear)">Clear
+                </button>
               </div>
 
               <div class="col-lg-4">
-                <button type="reset" (click)="onSubmit()" class="btn btn-outline-warning" style="width: 100%">Update</button>
+                <button type="reset" (click)="openModalSave(save)" class="btn btn-outline-warning" style="width: 100%">
+                  Update
+                </button>
               </div>
 
               <div class="col-lg-4">
-                <button type="button" (click)="onSubmit()" class="btn btn-outline-primary" style="width: 100%">Add</button>
+                <button type="button" (click)="openModalSave(update)" class="btn btn-outline-primary"
+                        style="width: 100%">Add
+                </button>
               </div>
 
 
-
-            </div><br><br>
+            </div>
+            <br><br>
 
           </form>
         </div>
@@ -222,15 +240,13 @@
                 <div class="row">
                   <div class="col-lg-4">
 
-                    <input class="form-control form-control-sm" formControlName="Name" placeholder="Name" (keyup.enter)="search()">
+                    <input class="form-control form-control-sm" formControlName="name" placeholder="Name" (keyup.enter)="search()">
                   </div>
-
-
 
 
                   <div class="col-lg-4">
 
-                    <input class="form-control form-control-sm" placeholder="NIC" formControlName="nic" (keyup.enter)="search()">
+                    <!--<input class="form-control form-control-sm" placeholder="NIC" formControlName="nic" (keyup.enter)="search()">-->
                   </div>
 
 
@@ -244,52 +260,152 @@
 
 
                 </div>
-              </form><br>
+              </form>
+              <br>
 
               <!-- Table ==================================================-->
               <div class="row">
-                <div class="col-lg-12" style="margin: auto">
-                  <table class="table table-hover">
-                    <thead>
-                    <tr>
+                <table class="table table-bordered table-hover table-sm mat-elevation-z8" mat-table
+                       [dataSource]="dataSource">
 
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef><h6>Name</h6></th>
+                    <td mat-cell *matCellDef="let person">{{person.name}}</td>
+                  </ng-container>
 
-                      <td>Name</td>
-                      <td>NIC</td>
-                      <td>Gender</td>
-                      <td>Address</td>
-                      <td>E-mail</td>
-                      <td>Contact</td>
-                      <td>Action</td>
+                  <ng-container matColumnDef="gender">
+                    <th mat-header-cell *matHeaderCellDef><h6>Gender</h6></th>
+                    <td mat-cell *matCellDef="let person">{{person.gender}}</td>
+                  </ng-container>
 
-                    </tr>
-                    </thead>
+                  <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef><h6>Address</h6></th>
+                    <td mat-cell *matCellDef="let person">{{person.address}}</td>
+                  </ng-container>
 
-                    <tbody>
-                    <tr *ngFor="let person of persons" (click)="fillForm(person)">
+                  <!--<ng-container matColumnDef="area">-->
+                    <!--<th mat-header-cell *matHeaderCellDef><h6>PHI Area</h6></th>-->
+                    <!--<td mat-cell *matCellDef="let person">{{person.area}}</td>-->
+                  <!--</ng-container>-->
 
+                  <!--<ng-container matColumnDef="phmarea">-->
+                    <!--<th mat-header-cell *matHeaderCellDef><h6>PHM Area</h6></th>-->
+                    <!--<td mat-cell *matCellDef="let person">{{person.phmarea}}</td>-->
+                  <!--</ng-container>-->
 
-                      <td>{{ person.name }}</td>
-                      <td>{{ person.nic }}</td>
-                      <td>{{ person.gender}}</td>
-                      <td>{{ person.address }}</td>
-                      <td>{{ person.email }}</td>
-                      <td>{{ person.contact }}</td>
-                      <td><div class="btn-group">
-                        <button type="button" (click)="delete(person.id)" class="btn btn-outline-danger">Delete</button>
+                  <ng-container matColumnDef="personType">
+                    <th mat-header-cell *matHeaderCellDef><h6>Person Type</h6></th>
+                    <td mat-cell *matCellDef="let person">{{person.personType}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="personStatus">
+                    <th mat-header-cell *matHeaderCellDef><h6>Person Status</h6></th>
+                    <td mat-cell *matCellDef="let person">{{person.personStatus}}</td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef><h6>Action</h6></th>
+                    <td mat-cell *matCellDef="let person">
+                      <div class="btn-group btn-group-sm special">
+                        <button type="button" class="btn btn-outline-success" (click)="fillForm(person)">Select</button>
+                        <button type="button" class="btn btn-outline-danger" (click)="openModal(delete)">Delete</button>
                       </div>
-                      </td>
 
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div></div>
+                      <ng-template #delete>
+                        <div class="modal-header">
+                          <h4 class="modal-title pull-left">Confirm..!</h4>
+                        </div>
+                        <div class="modal-body text-center">
+                          <div class="row">
+                            <div class="col-lg-12">
+                              <p>Are you sure to want to delete..?</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-8 offset-2 btn-group">
+                              <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">
+                                No
+                              </button>
+                              <button type="button" class="btn btn-primary" (click)="onDelete(person.id)"
+                                      style="width: 100%">Yes
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </td>
+                  </ng-container>
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                </table>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #save>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to save..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #update>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to update changes..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #clear>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to clear this form..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onClear()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 </body>
 </html>

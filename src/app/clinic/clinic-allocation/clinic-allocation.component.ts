@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ClinicCreationService} from "../../service/clinic-creation.service";
-import {ClinicCreation} from "../clinic-creation/CliinicCreation";
+import {ClinicCreation} from "../clinic-creation/ClinicCreation";
 import {AreaService} from "../../service/area.service";
 import {Area} from "../../area/Area";
 import {Employee} from "../../employee/Employee";
@@ -22,25 +22,25 @@ export class ClinicAllocationComponent implements OnInit {
   modalRef: BsModalRef;
 
   constructor(
-    private formBuilder : FormBuilder,
-    private modalService : BsModalService,
-    private clinicCrService:ClinicCreationService,
-    private areaService:AreaService,
-    private employeeService:EmployeeService,
-    private clinicAllocationService:ClinicAllocationService,
-    private http:HttpClient,
+    private formBuilder: FormBuilder,
+    private modalService: BsModalService,
+    private clinicCrService: ClinicCreationService,
+    private areaService: AreaService,
+    private employeeService: EmployeeService,
+    private clinicAllocationService: ClinicAllocationService,
+    private http: HttpClient,
+  ) {
+  }
 
-  ) { }
+  private formSubmitAttempt: boolean;
 
-  private formSubmitAttempt:boolean;
+  clinicAllocForm: FormGroup;
+  searchForm: FormGroup;
+  clinicCreations: ClinicCreation[];
+  areas: Area[];
+  employees: Employee[];
 
-  clinicAllocForm:FormGroup;
-  searchForm:FormGroup;
-  clinicCreations:ClinicCreation[];
-  areas:Area[];
-  employees:Employee[];
-
-  displayedColumns: string[] = ['name', 'area', 'date','time','place', 'employee', 'action'];
+  displayedColumns: string[] = ['name', 'area', 'date', 'time', 'place', 'employee', 'action'];
   dataSource: MatTableDataSource<ClinicAllocation>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -55,7 +55,7 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   formControl() {
-    this.clinicAllocForm= this.formBuilder.group({
+    this.clinicAllocForm = this.formBuilder.group({
       'id': null,
       'clinicCreation': [null, Validators.required],
       'area': [null, Validators.required],
@@ -67,21 +67,30 @@ export class ClinicAllocationComponent implements OnInit {
 
     });
 
-    this.searchForm= this.formBuilder.group({
-      'clinicCreation': null,
-      'area': null
+    this.searchForm = this.formBuilder.group({
+      'clinicCreation': this.formBuilder.group({
+        "name": null
+      }),
+      'area': this.formBuilder.group({
+        'name': null
+      })
     });
   }
 
-  loadCreatedClinics(){
+  loadData(clinicAllocation: ClinicAllocation[]) {
+    this.dataSource = new MatTableDataSource(clinicAllocation);
+    this.dataSource.paginator = this.paginator;
+  }
+
+  loadCreatedClinics() {
     this.clinicCrService.findAll().subscribe(value => this.clinicCreations = value);
   }
 
-  loadArea(){
+  loadArea() {
     this.areaService.findAll().subscribe(value => this.areas = value);
   }
 
-  loadEmployee(){
+  loadEmployee() {
     this.employeeService.findAll().subscribe(value => this.employees = value)
   }
 
@@ -92,11 +101,6 @@ export class ClinicAllocationComponent implements OnInit {
     );
   }
 
-  loadData(clinicAllocation : ClinicAllocation[]){
-    this.dataSource = new MatTableDataSource(clinicAllocation);
-    this.dataSource.paginator = this.paginator;
-  }
-
   public get date() {
     return this.clinicAllocForm.get("date") as FormControl;
   }
@@ -105,34 +109,32 @@ export class ClinicAllocationComponent implements OnInit {
     return this.clinicAllocForm.get("time") as FormControl;
   }
 
-  onSubmit(){
+  onSubmit() {
+    this.modalRef.hide();
     this.clinicAllocForm.patchValue({
       "date": this.convertDateToString(this.date.value),
       "time": this.convertTimeToString(this.time.value)
     });
-    // this.touch(["name","employee","areaType"]);
-    if (this.clinicAllocForm.valid) {
-      this.modalRef.hide();
-      console.log(this.clinicAllocForm.value);
-      this.http.put('http://localhost:8080/clinicallocs', this.clinicAllocForm.value).subscribe(value => {
-        this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
-      });
-      this.clinicAllocForm.reset();
-      // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
-
-    }
-    else {
-      alert("There are some errors in this page");
-
-    }
+    // this.touch(["clinicCreation","employee","area","date","time","place"]);
+    // if (this.clinicAllocForm.valid) {
+    console.log(this.clinicAllocForm.value);
+    this.http.put('http://localhost:8080/clinicallocs', this.clinicAllocForm.value).subscribe(value => {
+      this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
+    });
+    this.clinicAllocForm.reset();
+    // }
+    // else {
+    //   window.alert("There are some errors in this page");
+    //
+    // }
   }
 
-  fillForm(clinicAllocation: ClinicAllocation){
+  fillForm(clinicAllocation: ClinicAllocation) {
     this.clinicAllocForm.patchValue({
-      'id':clinicAllocation.id,
-      'clinicCreation': clinicAllocation.clinicCreation,
+      'id': clinicAllocation.id,
+      'clinicCreation': clinicAllocation.clinicCreation.name,
       'employee': clinicAllocation.employee,
-      'area': clinicAllocation.area,
+      'area': clinicAllocation.area.name,
       'date': clinicAllocation.date,
       'time': clinicAllocation.time,
       'place': clinicAllocation.place,
@@ -141,22 +143,31 @@ export class ClinicAllocationComponent implements OnInit {
     // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
   }
 
-  onDelete(id:string) {
+
+  onDelete(id: string) {
     console.log(this.clinicAllocForm.value);
     this.modalRef.hide();
-    this.http.delete('http://localhost:8080/clinicallocs/'+id, this.clinicAllocForm.value).subscribe(value => {
+    this.http.delete('http://localhost:8080/clinicallocs/' + id, this.clinicAllocForm.value).subscribe(value => {
       this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
     });
   }
 
-  onClear(){
+  onClear() {
     this.modalRef.hide();
     this.clinicAllocForm.reset();
   }
 
-  search(){
-    this.clinicAllocationService.search(this.searchForm.value).subscribe();
+  onSearchClear(){
+    this.searchForm.reset();
+    this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
   }
+
+  search() {
+    console.log(this.searchForm.value);
+    if (this.searchForm.value != ""){
+    this.clinicAllocationService.search(this.searchForm.value).subscribe(clinicAllocation => this.loadData(clinicAllocation));}
+  }
+
 
   touch(controls: string[]) {
     controls.forEach(control => {
@@ -197,9 +208,21 @@ export class ClinicAllocationComponent implements OnInit {
 
   convertStringToTime(value: string): Date {
     let date: Date = new Date();
+
     date.setHours(Number.parseInt(value.slice(0, 2)));
     date.setMinutes(Number.parseInt(value.slice(3)));
     return date;
+  }
+
+  openModalSave(template: TemplateRef<any>) {
+    console.log(this.clinicAllocForm);
+    this.touch(["clinicCreation", "employee", "area", "date", "time", "place"]);
+    if (this.clinicAllocForm.valid) {
+      this.modalRef = this.modalService.show(template);
+    }
+    else {
+      window.alert("There are some errors in this page");
+    }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -209,4 +232,6 @@ export class ClinicAllocationComponent implements OnInit {
   onModelNo(): void {
     this.modalRef.hide();
   }
+
+  compareEmployees = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
 }

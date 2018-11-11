@@ -24,12 +24,12 @@
                   <div class="row">
                     <div class="col-lg-4">
 
-                      <input class="form-control form-control-sm" formControlName="Name" placeholder="Name" (keyup.enter)="search()">
+                      <input class="form-control form-control-sm" formControlName="name" placeholder="Name" (keyup.enter)="search()">
                     </div>
 
                     <div class="col-lg-4">
 
-                      <input class="form-control form-control-sm" placeholder="Clinic Type" formControlName="clinicType" (keyup.enter)="search()">
+                      <input class="form-control form-control-sm" placeholder="Clinic Type" formControlName="nic" (keyup.enter)="search()">
                     </div>
 
 
@@ -42,8 +42,31 @@
                     </div><br>
               </form>
             </div><br>
+<!--======================== Table =============================================================================-->
 
-<!-- card ===============================================================================-->
+          <div class="row">
+            <table class="table table-bordered table-hover table-sm mat-elevation-z8" mat-table
+                   [dataSource]="dataSource">
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef><h6>Name</h6></th>
+                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.clinicCreation.name}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="area">
+                <th mat-header-cell *matHeaderCellDef><h6>Area</h6></th>
+                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.area.name}}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+
+
+<!--==================== card ===============================================================================-->
 
               <div class="row">
                 <div class="col-lg-10 offset-1">
@@ -63,7 +86,7 @@
 
 <!-- form ========================================================================================-->
 
-              <form [formGroup]="clinicForm">
+              <form [formGroup]="form">
                 <div class="form-group">
 
               <div class="row">
@@ -101,18 +124,31 @@
                   <label>Vaccination</label>
                 </div>
                 <div class="col-lg-9">
-                  <select id="vaccination" formControlName="vaccination" class="form-control form-control-sm">
-                    <option value="null" disabled>Select Clinic Type</option>
-                    <option *ngFor="let clinicType of clinicTypes" [value]="clinicType">
-                      {{clinicType}}
-                    </option>
-                  </select><br>
+                  <mat-select id="vaccination" formControlName="vaccination" placeholder="Select vaccine" class="form-control form-control-sm">
+                    <mat-option value="B.C.G">B.C.G</mat-option>
+                    <mat-option value="B.C.G 2nd dose">B.C.G 2nd dose</mat-option>
+                    <mat-option value="Pentavalent 1">Pentavalent 1</mat-option>
+                    <mat-option value="OPV 1">OPV 1</mat-option>
+                    <mat-option value="Pentavalent 2">Pentavalent 2</mat-option>
+                    <mat-option value="OPV 2">OPV 2</mat-option>
+                    <mat-option value="IPV">IPV</mat-option>
+                    <mat-option value="Pentavalent 3">Pentavalent 3</mat-option>
+                    <mat-option value="OPV 3">OPV 3</mat-option>
+                    <mat-option value="MMR 1">MMR 1</mat-option>
+                    <mat-option value="Live JE">Live JE</mat-option>
+                    <mat-option value="DPT">DPT</mat-option>
+                    <mat-option value="OPV 4">OPV 4</mat-option>
+                    <mat-option value="MMR 2">MMR 2</mat-option>
+                    <mat-option value="D.T">D.T</mat-option>
+                    <mat-option value="OPV 5">OPV 5</mat-option>
+                    <mat-option value="aTD">aTD</mat-option>
+                  </mat-select><br>
                 </div>
                   </div>
 
                 <div class="row">
                   <div class="col-lg-9 offset-3">
-                    <input type="text" formControlName="vaccination" placeholder="Type if not exists" class=" form-control form-control-sm"><br>
+                    <input type="text" formControlName="vaccination" placeholder="Other" class=" form-control form-control-sm"><br>
                   </div>
                 </div>
 
@@ -158,7 +194,17 @@
               <div class="card">
                 <div class="card-header bg-warning text-dark">Weight Chart</div>
                 <div class="card-body">
-
+                  <div style="display: block;">
+                    <canvas baseChart width="400" height="400"
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            (chartHover)="chartHovered($event)"
+                            (chartClick)="chartClicked($event)"></canvas>
+                  </div>
                 </div>
               </div>
             </div>

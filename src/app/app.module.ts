@@ -55,6 +55,7 @@ import { HomeComponent } from './home/home.component';
 import { EmployeeComponent } from './employee/employee.component';
 import { ModalComponent } from './modal/modal.component';
 import {
+  AlertModule,
   BsDatepickerModule,
   BsDropdownModule,
   CarouselModule, ModalModule,
@@ -71,7 +72,17 @@ import { ClinicCreationComponent } from './clinic/clinic-creation/clinic-creatio
 import {ChartsModule} from "ng2-charts";
 import { UserComponent } from './user/user.component';
 import { CampaignComponent } from './campaign/campaign.component';
+import {CommonModule} from "@angular/common";
+import {JwtModule} from "@auth0/angular-jwt";
+import {RouterModule} from "@angular/router";
 
+
+const jwtConfig = {
+  tokenGetter: () => sessionStorage.getItem('token'),
+  whitelistedDomains: ['localhost:8080'],
+  blacklistedRoutes: ['localhost:8080/login', 'localhost:8080/register'],
+  throwNoTokenError: false
+};
 
 @NgModule({
   exports: [
@@ -152,7 +163,15 @@ export class DemoMaterialModule {}
     CarouselModule.forRoot(),
     ChartsModule,
     TimepickerModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    MatSelectModule,
+    CommonModule,
+    JwtModule.forRoot({config: jwtConfig}),
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AlertModule.forRoot(),
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
