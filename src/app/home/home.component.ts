@@ -36,10 +36,10 @@ export class HomeComponent implements OnInit {
   formControl() {
     this.form= this.fb.group({
       'id': null,
-      'name': [null, Validators.required],
-      'nic': [null, Validators.required],
+      'name': [null, [Validators.required, Validators.pattern(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)]],
+      'nic': [null, [Validators.required, Validators.pattern(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/)]],
       'address': [null, Validators.required],
-      'contact': [null, Validators.required],
+      'contact': [null, [Validators.required, Validators.pattern(/^[0][0-9]{9}$/)]],
       'area': [null, Validators.required],
       'subject': [null, Validators.required],
       'complain': [null, Validators.required]
@@ -78,13 +78,13 @@ export class HomeComponent implements OnInit {
   }
 
   openModalSave(template: TemplateRef<any>) {
-    // this.touch(["name","gender","dob","address","contact","area","personType","personStatus"]);
-    // if (this.form.valid) {
+    this.touch(["name","nic","address","contact","area","subject","complain"]);
+    if (this.form.valid) {
     this.modalRef = this.modalService.show(template);}
-  // else {
-  //   window.alert("There are some errors in this page");
-  // }
-  // }
+  else {
+    window.alert("There are some errors in this page");
+  }
+  }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);

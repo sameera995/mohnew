@@ -12,6 +12,8 @@ import {PersonComponent} from "./person/person.component";
 import {ClinicCreationComponent} from "./clinic/clinic-creation/clinic-creation.component";
 import {UserComponent} from "./user/user.component";
 import {CampaignComponent} from "./campaign/campaign.component";
+import {CampaignCreationComponent} from "./campaign/campaign-creation/campaign-creation.component";
+import {CampaignAllocationComponent} from "./campaign/campaign-allocation/campaign-allocation.component";
 
 const appRoutes: Routes = [
   {path:'', component:HomeComponent},
@@ -24,7 +26,9 @@ const appRoutes: Routes = [
   {path:'cliniccr', component:ClinicCreationComponent},
   {path:'person', component:PersonComponent},
   {path:'user',component:UserComponent},
-  {path:'campaign',component:CampaignComponent}
+  {path:'campaign',component:CampaignComponent},
+  {path:'campaigncr',component:CampaignCreationComponent},
+  {path:'campaignalloc',component:CampaignAllocationComponent}
 ];
 
 @NgModule({

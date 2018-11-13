@@ -112,39 +112,43 @@
               <form [formGroup]="form">
                 <div class="row">
                   <div class="col-lg-2">
-                    <label>Name of Complainer</label>
+                    <label>Name of Complainer<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
-                    <input class="form-control form-control-sm">
+                    <input type="text" class="form-control form-control-sm" formControlName="name">
+                    <mat-error *ngIf="isFieldInvalid('name')">Please insert correct Name</mat-error>
                   </div>
 
                   <div class="col-lg-2">
-                    <label>NIC of Complainer</label>
+                    <label>NIC of Complainer<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
-                    <input class="form-control form-control-sm"><br>
+                    <input type="text"  class="form-control form-control-sm" formControlName="nic">
+                    <mat-error *ngIf="isFieldInvalid('nic')">Please insert correct Contact NIC</mat-error><br>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-2">
-                    <label>Contact of Complainer</label>
+                    <label>Contact of Complainer<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
-                    <input class="form-control form-control-sm">
+                    <input type="text" class="form-control form-control-sm" formControlName="contact">
+                    <mat-error *ngIf="isFieldInvalid('contact')">Please insert correct Contact No</mat-error>
                   </div>
 
                   <div class="col-lg-2">
-                    <label>Address of Complainer</label>
+                    <label>Address of Complainer<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
-                    <textarea class="form-control form-control-sm"></textarea><br>
+                    <textarea class="form-control form-control-sm" formControlName="address"></textarea>
+                    <mat-error *ngIf="isFieldInvalid('address')">Please insert correct Address</mat-error><br>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-2">
-                    <label>Area of Complain</label>
+                    <label>Area of Complain<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
                     <mat-select id="area" formControlName="area" class="form-control form-control-sm">
@@ -152,27 +156,33 @@
                         {{area.name}}
                       </mat-option>
                     </mat-select>
+                    <mat-error *ngIf="isFieldInvalid('area')">Please select your Area</mat-error>
                   </div>
 
                   <div class="col-lg-2">
-                    <label>Subject of Complain</label>
+                    <label>Subject of Complain<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-4">
-                    <input class="form-control form-control-sm"><br>
+                    <input type="text" class="form-control form-control-sm" formControlName="subject">
+                    <mat-error *ngIf="isFieldInvalid('subject')">Please insert relevant Subject</mat-error><br>
                   </div>
                 </div>
 
                 <div class="row">
                   <div class="col-lg-2">
-                    <label>Complain</label>
+                    <label>Complain<span style="color: red">*</span></label>
                   </div>
                   <div class="col-lg-10">
-                    <textarea class="form-control"></textarea><br>
+                    <textarea class="form-control" formControlName="complain" placeholder="Explain your complain clearly with necessary information(location, problem, names of people). Don't use more than 2000 characters"></textarea>
+                    <mat-error *ngIf="isFieldInvalid('complain')">Please insert your Complain</mat-error><br>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 offset-6">
+                  <div class="col-lg-3">
+                    <label>Fields marked with (<span style="color: red">*</span>) are mandatory.</label>
+                  </div>
+                  <div class="col-lg-3 offset-3">
                     <button class="btn btn-outline-dark" style="width: 100%;" (click)="openModal(clear)">Clear</button>
                   </div>
                   <div class="col-lg-3">
@@ -186,7 +196,7 @@
               <div class="row" style="padding-top: 2%;">
                 <div class="col-lg-12 alert alert-warning">
                   <p><strong>Warning! </strong><br>
-                  Complainer must accept the responsibility of his/her complain. If given data of complainer are incorrect, we will be considered that complain as a fake complain.
+                  If given data about complain and the complainer are incorrect, we will be considered that complain as a fake or an incorrect complain.
                   </p>
                 </div>
               </div>

@@ -179,8 +179,10 @@
         <label>Employee Status<span style="color: red">*</span></label>
       </div>
       <div class="col-lg-9 col-sm-12">
-        <input type="radio" value="1" name="employeeStatus" formControlName="employeeStatus"> Active<br>
-        <input type="radio" value="0" name="employeeStatus" formControlName="employeeStatus"> Inactive
+        <select formControlName="employeeStatus" class="form-control form-control-sm">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
         <mat-error *ngIf="isFieldInvalid('employeeStatus')">Please select correct Employee Status</mat-error>
       </div>
 
@@ -191,15 +193,15 @@
     <div class="row">
 
       <div class="col-lg-4">
-        <button type="reset" class="btn btn-outline-dark" style="width: 100%">Clear</button>
+        <button type="button" class="btn btn-outline-dark" style="width: 100%" (click)="openModal(clear)">Clear</button>
       </div>
 
       <div class="col-lg-4">
-        <button type="reset" (click)="onSubmit()" class="btn btn-outline-warning" style="width: 100%">Update</button>
+        <button type="button" (click)="openModalSave(update)" class="btn btn-outline-warning" style="width: 100%">Update</button>
       </div>
 
       <div class="col-lg-4">
-        <button type="button" (click)="onSubmit()" class="btn btn-outline-primary" style="width: 100%">Add</button>
+        <button type="button" (click)="openModalSave(save)" class="btn btn-outline-primary" style="width: 100%">Add</button>
       </div>
 
 
@@ -247,48 +249,117 @@
 
     <!-- Table ==================================================-->
       <div class="row">
-        <div class="col-lg-12" style="margin: auto">
-          <table class="table table-hover">
-            <thead>
-              <tr>
+        <div class="col-lg-12 mat-elevation-z8">
+          <table class="table table-hover table-sm" mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> <h6>Name</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.name}}</td>
+            </ng-container>
 
+            <ng-container matColumnDef="gender">
+              <th mat-header-cell *matHeaderCellDef> <h6>Gender</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.gender}}</td>
+            </ng-container>
 
-                <td>Name</td>
-                <td>NIC</td>
-                <td>Gender</td>
-                <td>Address</td>
-                <td>E-mail</td>
-                <td>Contact</td>
-                <td>Action</td>
+            <ng-container matColumnDef="nic">
+              <th mat-header-cell *matHeaderCellDef> <h6>NIC</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.nic}}</td>
+            </ng-container>
 
-              </tr>
-            </thead>
+            <ng-container matColumnDef="contact">
+              <th mat-header-cell *matHeaderCellDef> <h6>Contact</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.contact}}</td>
+            </ng-container>
 
-            <tbody>
-              <tr *ngFor="let employee of employees" (click)="fillForm(employee)">
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef> <h6>E mail</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.email}}</td>
+            </ng-container>
 
+            <ng-container matColumnDef="employeeStatus">
+              <th mat-header-cell *matHeaderCellDef> <h6>Status</h6> </th>
+              <td mat-cell *matCellDef="let employee">{{employee.employeeStatus}}</td>
+            </ng-container>
 
-                <td>{{ employee.name }}</td>
-                <td>{{ employee.nic }}</td>
-                <td>{{ employee.gender}}</td>
-                <td>{{ employee.address }}</td>
-                <td>{{ employee.email }}</td>
-                <td>{{ employee.contact }}</td>
-                <td><div class="btn-group">
-                    <button type="button" (click)="delete(employee.id)" class="btn btn-outline-danger">Delete</button>
-                    </div>
-                </td>
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef> <h6>Action</h6> </th>
+              <td mat-cell *matCellDef="let employee">
+                <div class="btn-group btn-group-sm special">
+                  <button type="button" class="btn btn-outline-success" (click)="fillForm(employee)">Select</button>
+                </div>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-              </tr>
-            </tbody>
           </table>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
-      </div></div>
+      </div>
+  </div>
 </div>
 </div>
 </div>
   </div>
   </div>
 </div>
+
+
+<ng-template #save>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to save..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #update>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to update changes..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #clear>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Confirm..!</h4>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Are you sure to want to clear this form..?</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8 offset-2 btn-group">
+        <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>
+        <button type="button" class="btn btn-primary" (click)="onClear()" style="width: 100%">Yes</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
 </body>
 </html>

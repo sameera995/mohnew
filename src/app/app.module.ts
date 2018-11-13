@@ -75,6 +75,8 @@ import { CampaignComponent } from './campaign/campaign.component';
 import {CommonModule} from "@angular/common";
 import {JwtModule} from "@auth0/angular-jwt";
 import {RouterModule} from "@angular/router";
+import { CampaignAllocationComponent } from './campaign/campaign-allocation/campaign-allocation.component';
+import { CampaignCreationComponent } from './campaign/campaign-creation/campaign-creation.component';
 
 
 const jwtConfig = {
@@ -146,7 +148,8 @@ export class DemoMaterialModule {}
     ClinicCreationComponent,
     PersonComponent,
     UserComponent,
-    CampaignComponent
+    CampaignComponent,CampaignAllocationComponent,
+    CampaignCreationComponent
   ],
   imports: [
     BrowserModule,

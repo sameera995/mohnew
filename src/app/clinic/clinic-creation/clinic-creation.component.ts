@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ClinicCreation} from "./ClinicCreation";
@@ -6,6 +6,7 @@ import {ClinicCreationService} from "../../service/clinic-creation.service";
 import {PersonTypeService} from "../../service/person-type.service";
 import {Area} from "../../area/Area";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({
   selector: 'app-clinic-creation',
@@ -17,10 +18,12 @@ export class ClinicCreationComponent implements OnInit {
   constructor(private clinicCreationService:ClinicCreationService,
               private personTypeService:PersonTypeService,
               private http:HttpClient,
+              private modalService: BsModalService,
               private formBuilder: FormBuilder) {}
 
   private formSubmitAttempt:boolean;
 
+  modalRef: BsModalRef;
   clinicCreationForm:FormGroup;
   clinicCreations:ClinicCreation[];
   personTypes:string[];
@@ -73,26 +76,28 @@ export class ClinicCreationComponent implements OnInit {
 
   onSubmit() {
     this.touch(["name","clinicType","personType"]);
+
     if (this.clinicCreationForm.valid) {
       console.log(this.clinicCreationForm.value);
       this.http.put('http://localhost:8080/cliniccreations', this.clinicCreationForm.value).subscribe(value => {
         this.clinicCreationService.findAll().subscribe(clinicCreation => this.loadData(clinicCreation));
       });
+      this.modalRef.hide();
       this.clinicCreationForm.reset();
-      // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
-
     }
+
     else {
       alert("There are some errors in this page");
 
     }
   }
 
-  delete(id:string) {
+  onDelete(id:string) {
     console.log(this.clinicCreationForm.value);
     this.http.delete('http://localhost:8080/cliniccreations/' + id, this.clinicCreationForm.value).subscribe(value => {
       this.clinicCreationService.findAll().subscribe(clinicCreation => this.loadData(clinicCreation));
     });
+    this.modalRef.hide();
   }
 
   fillForm(clinicCreation: ClinicCreation){
@@ -117,6 +122,30 @@ export class ClinicCreationComponent implements OnInit {
     controls.forEach(control => {
       this.clinicCreationForm.get(control).markAsTouched({onlySelf: true})
     });
+  }
+
+  openModalSave(template: TemplateRef<any>) {
+    console.log(this.clinicCreationForm);
+    this.touch(["name", "clinicType", "personType"]);
+    if (this.clinicCreationForm.valid) {
+      this.modalRef = this.modalService.show(template);
+    }
+    else {
+      window.alert("There are some errors in this page");
+    }
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  onModelNo(): void {
+    this.modalRef.hide();
+  }
+
+  onClear() {
+    this.modalRef.hide();
+    this.clinicCreationForm.reset();
   }
 
   compareClinicType = (o1: any, o2: any) => o1 === o2;

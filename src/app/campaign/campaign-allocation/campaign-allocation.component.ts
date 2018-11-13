@@ -1,75 +1,69 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ClinicCreationService} from "../../service/clinic-creation.service";
-import {ClinicCreation} from "../clinic-creation/ClinicCreation";
 import {AreaService} from "../../service/area.service";
+import {EmployeeService} from "../../service/employee.service";
+import {HttpClient} from "@angular/common/http";
+import {CampaignCreationService} from "../../service/campaign-creation.service";
 import {Area} from "../../area/Area";
 import {Employee} from "../../employee/Employee";
-import {EmployeeService} from "../../service/employee.service";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
-import {ClinicAllocation} from "./ClinicAllocation";
-import {HttpClient} from "@angular/common/http";
-import {ClinicAllocationService} from "../../service/clinic-allocation.service";
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {CampaignAllocation} from "./CampaignAllocation";
+import {CampaignCreation} from "../campaign-creation/CampaignCreation";
+import {CampaignAllocationService} from "../../service/campaign-allocation.service";
 
 @Component({
-  selector: 'app-clinic-allocation',
-  templateUrl: './clinic-allocation.component.html',
-  styleUrls: ['./clinic-allocation.component.css']
+  selector: 'app-campaign-allocation',
+  templateUrl: './campaign-allocation.component.html',
+  styleUrls: ['./campaign-allocation.component.css']
 })
-export class ClinicAllocationComponent implements OnInit {
+export class CampaignAllocationComponent implements OnInit {
 
   modalRef: BsModalRef;
 
   constructor(
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
-    private clinicCrService: ClinicCreationService,
+    private campaignCrService: CampaignCreationService,
+    private campaignAllocationService: CampaignAllocationService,
     private areaService: AreaService,
     private employeeService: EmployeeService,
-    private clinicAllocationService: ClinicAllocationService,
     private http: HttpClient,
   ) {
   }
 
   private formSubmitAttempt: boolean;
 
-  clinicAllocForm: FormGroup;
+  form: FormGroup;
   searchForm: FormGroup;
-  clinicCreations: ClinicCreation[];
   areas: Area[];
   employees: Employee[];
+  campaignCreations:CampaignCreation[];
 
-  displayedColumns: string[] = ['name', 'area', 'date', 'time', 'place', 'employee','status', 'action'];
-  dataSource: MatTableDataSource<ClinicAllocation>;
+  displayedColumns: string[] = ['name', 'area', 'date', 'time', 'place', 'employee', 'action'];
+  dataSource: MatTableDataSource<CampaignAllocation>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
-
     this.createForm();
-    this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
-    this.loadCreatedClinics();
-    this.loadEmployee();
-    this.loadArea();
   }
 
   createForm() {
-    this.clinicAllocForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       'id': null,
-      'clinicCreation': [null, Validators.required],
+      'campaignCreation': [null, Validators.required],
       'area': [null, Validators.required],
       'date': [null, Validators.required],
       'time': [null, Validators.required],
       'place': [null, Validators.required],
       'employee': [null, Validators.required],
-      'description': null,
-      'status':[null, Validators.required]
+      'description': null
 
     });
 
     this.searchForm = this.formBuilder.group({
-      'clinicCreation': this.formBuilder.group({
+      'campaignCreation': this.formBuilder.group({
         "name": null
       }),
       'area': this.formBuilder.group({
@@ -78,13 +72,13 @@ export class ClinicAllocationComponent implements OnInit {
     });
   }
 
-  loadData(clinicAllocation: ClinicAllocation[]) {
-    this.dataSource = new MatTableDataSource(clinicAllocation);
+  loadData(campaignAllocation: CampaignAllocation[]) {
+    this.dataSource = new MatTableDataSource(campaignAllocation);
     this.dataSource.paginator = this.paginator;
   }
 
-  loadCreatedClinics() {
-    this.clinicCrService.findAll().subscribe(value => this.clinicCreations = value);
+  loadCreatedCampaigns() {
+    this.campaignCrService.findAll().subscribe(value => this.campaignCreations = value);
   }
 
   loadArea() {
@@ -92,37 +86,37 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   loadEmployee() {
-    this.employeeService.findAllByEmployeeStatus("Active").subscribe(value => this.employees = value)
+    this.employeeService.findAll().subscribe(value => this.employees = value)
   }
 
   isFieldInvalid(field: string) {
     return (
-      (!this.clinicAllocForm.get(field).valid && this.clinicAllocForm.get(field).touched) ||
-      (this.clinicAllocForm.get(field).untouched && this.formSubmitAttempt)
+      (!this.form.get(field).valid && this.form.get(field).touched) ||
+      (this.form.get(field).untouched && this.formSubmitAttempt)
     );
   }
 
   public get date() {
-    return this.clinicAllocForm.get("date") as FormControl;
+    return this.form.get("date") as FormControl;
   }
 
   public get time() {
-    return this.clinicAllocForm.get("time") as FormControl;
+    return this.form.get("time") as FormControl;
   }
 
   onSubmit() {
     this.modalRef.hide();
-    this.clinicAllocForm.patchValue({
+    this.form.patchValue({
       "date": this.convertDateToString(this.date.value),
       "time": this.convertTimeToString(this.time.value)
     });
-    this.touch(["clinicCreation","employee","area","date","time","place","status"]);
-    if (this.clinicAllocForm.valid) {
-    console.log(this.clinicAllocForm.value);
-    this.http.put('http://localhost:8080/clinicallocs', this.clinicAllocForm.value).subscribe(value => {
-      this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
-    });
-    this.clinicAllocForm.reset();
+    this.touch(["campaignCreation","employee","area","date","time","place"]);
+    if (this.form.valid) {
+      console.log(this.form.value);
+      this.http.put('http://localhost:8080/campaignallocs', this.form.value).subscribe(value => {
+        this.campaignAllocationService.findAll().subscribe(campaignAllocation => this.loadData(campaignAllocation));
+      });
+      this.form.reset();
     }
     else {
       window.alert("There are some errors in this page");
@@ -130,40 +124,48 @@ export class ClinicAllocationComponent implements OnInit {
     }
   }
 
-  fillForm(clinicAllocation: ClinicAllocation) {
-    this.clinicAllocForm.patchValue({
-      'id': clinicAllocation.id,
-      'clinicCreation': clinicAllocation.clinicCreation.name,
-      'employee': clinicAllocation.employee,
-      'area': clinicAllocation.area.name,
-      'date': clinicAllocation.date,
-      'time': clinicAllocation.time,
-      'place': clinicAllocation.place,
-      'description': clinicAllocation.description,
-      'status':clinicAllocation.status
+  fillForm(campaignAllocation: CampaignAllocation) {
+    this.form.patchValue({
+      'id': campaignAllocation.id,
+      'campaignCreation': campaignAllocation.campaignCreation.name,
+      'employee': campaignAllocation.employee,
+      'area': campaignAllocation.area.name,
+      'date': campaignAllocation.date,
+      'time': campaignAllocation.time,
+      'place': campaignAllocation.place,
+      'description': campaignAllocation.description
+    });
+  }
+
+
+  onDelete(id: string) {
+    console.log(this.form.value);
+    this.modalRef.hide();
+    this.http.delete('http://localhost:8080/campaignallocs/' + id, this.form.value).subscribe(value => {
+      this.campaignAllocationService.findAll().subscribe(campaignAllocation => this.loadData(campaignAllocation));
     });
   }
 
   onClear() {
     this.modalRef.hide();
-    this.clinicAllocForm.reset();
+    this.form.reset();
   }
 
   onSearchClear(){
     this.searchForm.reset();
-    this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
+    this.campaignAllocationService.findAll().subscribe(campaignAllocation => this.loadData(campaignAllocation));
   }
 
   search() {
     console.log(this.searchForm.value);
     if (this.searchForm.value != ""){
-    this.clinicAllocationService.search(this.searchForm.value).subscribe(clinicAllocation => this.loadData(clinicAllocation));}
+      this.campaignAllocationService.search(this.searchForm.value).subscribe(campaignAllocation => this.loadData(campaignAllocation));}
   }
 
 
   touch(controls: string[]) {
     controls.forEach(control => {
-      this.clinicAllocForm.get(control).markAsTouched({onlySelf: true})
+      this.form.get(control).markAsTouched({onlySelf: true})
     });
   }
 
@@ -207,9 +209,9 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   openModalSave(template: TemplateRef<any>) {
-    console.log(this.clinicAllocForm);
-    this.touch(["clinicCreation", "employee", "area", "date", "time", "place"]);
-    if (this.clinicAllocForm.valid) {
+    console.log(this.form);
+    this.touch(["campaignCreation", "employee", "area", "date", "time", "place"]);
+    if (this.form.valid) {
       this.modalRef = this.modalService.show(template);
     }
     else {
@@ -226,4 +228,5 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   compareEmployees = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
+
 }

@@ -71,9 +71,8 @@
           </form>
         </div>
 <!--table-->
-        <div class="col-lg-8">
-          <table class="table table-bordered table-hover table-sm mat-elevation-z8" mat-table [dataSource]="dataSource">
-
+        <div class="col-lg-6 mat-elevation-z8">
+          <table class="table table-hover table-sm" mat-table [dataSource]="dataSource">
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> <h6>Name</h6> </th>
               <td mat-cell *matCellDef="let area">{{area.name}}</td>

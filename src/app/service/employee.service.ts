@@ -17,6 +17,10 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.baseUrl}`);
   }
 
+  findAllByEmployeeStatus(employeeStatus:string){
+    return this.http.get<Employee[]>(`${this.baseUrl}/employeeStatus/${employeeStatus}`);
+  }
+
   findByArea(area:string){
     return this.http.get<Employee[]>(`${this.baseUrl}/${area}`);
   }

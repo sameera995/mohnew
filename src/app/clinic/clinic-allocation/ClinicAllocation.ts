@@ -11,5 +11,6 @@ export interface ClinicAllocation {
   place:string;
   employee:Employee[];
   description:string;
+  status:string;
 
 }

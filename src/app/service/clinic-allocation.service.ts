@@ -17,7 +17,6 @@ export class ClinicAllocationService {
 
   findAll() {
     return this.http.get<ClinicAllocation[]>(`${this.baseUrl}`);
-
   }
 
   search(clinicAllocation: {}): Observable<ClinicAllocation[]> {

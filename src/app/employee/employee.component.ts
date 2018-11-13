@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Employee} from "./Employee";
 import {HttpClient} from "@angular/common/http";
@@ -6,9 +6,11 @@ import {GenderService} from "../service/gender.service";
 import {EmployeeService} from "../service/employee.service";
 import {DesignationService} from "../service/designation.service";
 import {CivilstatusService} from "../service/civilStatus.service";
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
 import {Observable} from "rxjs";
 import {delay} from "rxjs/operators";
+import {ClinicAllocation} from "../clinic/clinic-allocation/ClinicAllocation";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 export interface Gender {
   id: string;
@@ -41,6 +43,7 @@ export class EmployeeComponent implements OnInit {
               private genderService: GenderService,
               private employeeService: EmployeeService,
               private designationService:DesignationService,
+              private modalService: BsModalService,
               private civilStatusService:CivilstatusService,
               public dialog:MatDialog) {}
 
@@ -50,14 +53,20 @@ export class EmployeeComponent implements OnInit {
   genders:string[];
   designations:string[];
   civilStatus:string[];
+  modalRef: BsModalRef;
+
+  displayedColumns: string[] = ['name', 'gender', 'nic', 'contact', 'email', 'employeeStatus', 'action'];
+  dataSource: MatTableDataSource<Employee>;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
 
-    this.formControl()
-    this.loadTable()
-    this.loadDesignation()
-    this.loadCivilStatus()
-    this.loadGender()
+    this.formControl();
+    this.employeeService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
+    this.loadDesignation();
+    this.loadCivilStatus();
+    this.loadGender();
 
   }
 
@@ -66,10 +75,10 @@ export class EmployeeComponent implements OnInit {
       'id':null,
       'name': [null, Validators.required],
       'gender': [null, Validators.required],
-      'nic': [null, [Validators.required, Validators.pattern(/^[0-9]{9,12}[VvXx]$/)]],
+      'nic': [null, [Validators.required, Validators.pattern(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/)]],
       'dob': [null, Validators.required],
       'address': [null, Validators.required],
-      'email': [null, [Validators.required, Validators.email]],
+      'email': [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/)]],
       'contact': [null, [Validators.required, Validators.pattern(/^[0][0-9]{9}$/)]],
       'civilStatus': [null, Validators.required],
       'designation': [null, Validators.required],
@@ -84,17 +93,15 @@ export class EmployeeComponent implements OnInit {
 
   }
 
+  loadData(employee: Employee[]) {
+    this.dataSource = new MatTableDataSource(employee);
+    this.dataSource.paginator = this.paginator;
+  }
+
   loadGender(){
     this.genderService.findAll().subscribe(value => {
       console.log(value);
       this.genders = value;
-    })
-  }
-
-  loadTable(){
-    this.employeeService.findAll().subscribe(value => {
-      console.log(value);
-      this.employees = value;
     })
   }
 
@@ -132,15 +139,15 @@ export class EmployeeComponent implements OnInit {
   }
 
   onSubmit() {
-    this.touch(["name", "nic","dob","gender","address","email","contact","designation","civilStatus","assignDate","employeeStatus"]);
     if (this.form.valid) {
 
       console.log(this.form.value);
       this.changeDateToString();
-      this.http.put('http://localhost:8080/employees', this.form.value).subscribe();
-      this.loadTable();
+      this.http.put('http://localhost:8080/employees', this.form.value).subscribe(value => {
+        this.employeeService.findAll().subscribe(employee => this.loadData(employee));
+      });
+      this.modalRef.hide();
       this.form.reset();
-      // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
 
     }
     else {
@@ -149,19 +156,39 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  // onUpdate(employee:Employee):Observable<Employee> {
-  //   return this.http.put<Employee>('http://localhost:8080/employees/',employee);
-  // }
-
-  delete(id:string) {
-    console.log(this.form.value);
-    this.http.delete('http://localhost:8080/employees/' + id, this.form.value).subscribe();
-    this.loadTable();
+  onClear() {
+    this.modalRef.hide();
+    this.form.reset();
   }
 
-  search(){
-      this.employeeService.search(this.searchForm.value).subscribe();
+  onSearchClear(){
+    this.searchForm.reset();
+    this.employeeService.findAll().subscribe(employee => this.loadData(employee));
+  }
 
+  openModalSave(template: TemplateRef<any>) {
+    console.log(this.form);
+    this.touch(["name", "nic","dob","gender","address","email","contact","designation","civilStatus","assignDate","employeeStatus"]);
+    if (this.form.valid) {
+      this.modalRef = this.modalService.show(template);
+    }
+    else {
+      window.alert("There are some errors in this page");
+    }
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  onModelNo(): void {
+    this.modalRef.hide();
+  }
+
+  search() {
+    console.log(this.searchForm.value);
+    if (this.searchForm.value != ""){
+      this.employeeService.search(this.searchForm.value).subscribe(employee => this.loadData(employee));}
   }
 
   // compareGenders = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;

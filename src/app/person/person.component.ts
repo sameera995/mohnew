@@ -144,14 +144,6 @@ export class PersonComponent implements OnInit {
     this.form.reset();
   }
 
-  onDelete(id:string) {
-    console.log(this.form.value);
-    this.modalRef.hide();
-    this.http.delete('http://localhost:8080/persons/'+id, this.form.value).subscribe(value => {
-      this.personService.findAll().subscribe(person => this.loadData(person));
-    });
-  }
-
   onClear(){
     this.modalRef.hide();
     this.form.reset();

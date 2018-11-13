@@ -7,13 +7,13 @@
 
 <div class="container-fluid" style="padding: 5px 5px 5px 5px">
   <div class="card">
-    <div class="card-header bg-info text-white"><h5>Clinic Allocation</h5></div>
+    <div class="card-header bg-info text-white"><h5>Campaign Allocation</h5></div>
     <div class="card-body">
 
       <div class="row">
         <div class="col-lg-5">
           <!--form-->
-          <form [formGroup]="clinicAllocForm">
+          <form [formGroup]="form">
             <div class="form-group">
 
               <div class="row">
@@ -22,13 +22,13 @@
                   <label>Select Clinc</label>
                 </div>
                 <div class="col-lg-9">
-                  <mat-select id="clinic" formControlName="clinicCreation" class="form-control form-control-sm">
-                    <mat-option value="null" disabled>Select Clinic</mat-option>
-                    <mat-option *ngFor="let clinicCreation of clinicCreations" [value]="clinicCreation">
-                      {{clinicCreation.name}}
+                  <mat-select id="campaign" formControlName="campaignCreation" class="form-control form-control-sm">
+                    <mat-option value="null" disabled>Select Campaign</mat-option>
+                    <mat-option *ngFor="let campaignCreation of campaignCreations" [value]="campaignCreation">
+                      {{campaignCreation.name}}
                     </mat-option>
                   </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('clinicCreation')">Please select Clinic</mat-error>
+                  <mat-error *ngIf="isFieldInvalid('campaignCreation')">Please select Campaign</mat-error>
                   <br><br>
                 </div>
               </div>
@@ -102,7 +102,7 @@
                   <!--</select><br>-->
 
                   <mat-select formControlName="employee" multiple class="form-control form-control-sm"
-                      [compareWith]="compareEmployees">
+                              [compareWith]="compareEmployees">
                     <mat-option *ngFor="let employee of employees" [value]="employee">
                       {{employee.name}}
                     </mat-option>
@@ -119,24 +119,10 @@
                   <label>Description</label>
                 </div>
                 <div class="col-lg-9">
-                  <input type="text" formControlName="description" id="description" class=" form-control form-control-sm">
+                  <input type="text" formControlName="description" id="description"
+                         class=" form-control form-control-sm">
                   <mat-error *ngIf="isFieldInvalid('description')">Please insert Description</mat-error>
                   <br>
-                </div>
-              </div>
-
-              <div class="row">
-
-                <div class="col-lg-3">
-                  <label>Status</label>
-                </div>
-                <div class="col-lg-9">
-                  <mat-select formControlName="status" multiple class="form-control form-control-sm" >
-                    <mat-option value="Active">Active</mat-option>
-                    <mat-option value="Inactive">Inactive</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="isFieldInvalid('status')">Please Select Status</mat-error>
-                  <br><br>
                 </div>
               </div>
 
@@ -172,8 +158,8 @@
 
           <form [formGroup]="searchForm">
             <div class="row">
-              <div class="col-lg-4" formGroupName="clinicCreation">
-                <input class="form-control form-control-sm" formControlName="name" placeholder="Clinic Name"
+              <div class="col-lg-4" formGroupName="campaignCreation">
+                <input class="form-control form-control-sm" formControlName="name" placeholder="Campaign Name"
                        (keyup.enter)="search()">
               </div>
 
@@ -199,53 +185,72 @@
           <!--========== table ======================-->
 
           <div class="row">
-            <div class="col-lg-12 mat-elevation-z8">
+            <div class="col-lg-4 mat-elevation-z8">
             <table class="table table-hover table-sm" mat-table [dataSource]="dataSource">
 
               <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef><h6>Name</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.clinicCreation.name}}</td>
+                <td mat-cell *matCellDef="let campaignAllocation">{{campaignAllocation.campaignCreation.name}}</td>
               </ng-container>
 
               <ng-container matColumnDef="area">
                 <th mat-header-cell *matHeaderCellDef><h6>Area</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.area.name}}</td>
+                <td mat-cell *matCellDef="let campaignAllocation">{{campaignAllocation.area.name}}</td>
               </ng-container>
 
               <ng-container matColumnDef="date">
                 <th mat-header-cell *matHeaderCellDef><h6>Date</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.date}}</td>
+                <td mat-cell *matCellDef="let campaignAllocation">{{campaignAllocation.date}}</td>
               </ng-container>
 
               <ng-container matColumnDef="time">
                 <th mat-header-cell *matHeaderCellDef><h6>Time</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.time}}</td>
+                <td mat-cell *matCellDef="let campaignAllocation">{{campaignAllocation.time}}</td>
               </ng-container>
 
               <ng-container matColumnDef="place">
                 <th mat-header-cell *matHeaderCellDef><h6>Place</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.place}}</td>
+                <td mat-cell *matCellDef="let campaignAllocation">{{campaignAllocation.place}}</td>
               </ng-container>
 
               <ng-container matColumnDef="employee">
                 <th mat-header-cell *matHeaderCellDef><h6>Employee</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">
-                  <!--<span *ngFor="let employee of clinicAllocation">-->
+                <td mat-cell *matCellDef="let campaignAllocation">
+                  <!--<span *ngFor="let employee of campaignAllocation">-->
                   <!--{{employee.name}}</span>-->
                 </td>
               </ng-container>
 
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef><h6>Status</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.status}}</td>
-              </ng-container>
-
               <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef><h6>Action</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">
+                <td mat-cell *matCellDef="let campaignAllocation">
                   <div class="btn-group btn-group-sm special">
-                    <button type="button" class="btn btn-outline-success" (click)="fillForm(clinicAllocation)">Select
-                    </button></div>
+                    <button type="button" class="btn btn-outline-success" (click)="fillForm(campaignAllocation)">Select
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" (click)="openModal(delete)">Delete</button>
+                  </div>
+
+                  <ng-template #delete>
+                    <div class="modal-header">
+                      <h4 class="modal-title pull-left">Confirm..!</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <p>Are you sure to want to delete..?</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-8 offset-2 btn-group">
+                          <button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No
+                          </button>
+                          <button type="button" class="btn btn-primary" (click)="onDelete(campaignAllocation.id)"
+                                  style="width: 100%">Yes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
                 </td>
               </ng-container>
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -318,25 +323,6 @@
     </div>
   </div>
 </ng-template>
-
-<!--<ng-template #error>-->
-<!--<div class="modal-header">-->
-<!--<h4 class="modal-title pull-left">Confirm..!</h4>-->
-<!--</div>-->
-<!--<div class="modal-body text-center">-->
-<!--<div class="row">-->
-<!--<div class="col-lg-12">-->
-<!--<p>There are some errors in this form..?</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="row">-->
-<!--<div class="col-lg-8 offset-2 btn-group">-->
-<!--<button type="button" class="btn btn-default" (click)="onModelNo()" style="width: 100%">No</button>-->
-<!--<button type="button" class="btn btn-primary" (click)="onClear()" style="width: 100%">Yes</button>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-<!--</ng-template>-->
 
 </body>
 </html>
