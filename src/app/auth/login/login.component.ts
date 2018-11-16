@@ -1,14 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
+import {NgForm} from "@angular/forms";
+import {AuthenticationService} from "../authentication.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
-import {AuthService} from "../service/auth.service";
-import {AuthenticationService} from "../service/authentication.service";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
 
@@ -24,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   logIn(form: NgForm) {
     this.authService.logIn(form.value.username, form.value.password).subscribe(
-      (value) => this.router.navigate(["/home"]),
+      (value) => this.router.navigate(["/main"]),
       (error: HttpErrorResponse) => {
         this.invalidLogin = true;
         this.message = error.error.message;
@@ -47,6 +46,8 @@ export class LoginComponent implements OnInit {
       }
     );
   }
+
+
 
   ngOnInit() {
     this.username.nativeElement.focus();

@@ -6,32 +6,32 @@
 
 <div class="container-fluid" style="padding: 5px 5px 5px 5px">
   <div class="card">
-    <div class="card-header bg-info text-white"><h5>Baby Clinic</h5></div>
+    <div class="card-header bg-info text-white"><h5>Pregnant Mothers Clinic</h5></div>
     <div class="card-body">
 
       <div class="row">
         <div class="col-lg-5">
 
-<!--====================== form ========================================================================================-->
+          <!--====================== form ========================================================================================-->
 
           <form [formGroup]="form">
             <div class="form-group">
 
-                  <div class="row">
+              <div class="row">
 
-                    <div class="col-lg-3">
-                      <label>Select Clinc</label>
-                    </div>
-                    <div class="col-lg-9">
-                      <mat-select id="clinic" formControlName="clinicAllocation" class="form-control form-control-sm" placeholder="Select Clinic">
-                        <mat-option *ngFor="let clinicAllocation of clinicAllocations" [value]="clinicAllocation">
-                          {{clinicAllocation.id}} - {{clinicAllocation.clinicCreation.name}}
-                        </mat-option>
-                      </mat-select>
-                      <mat-error *ngIf="isFieldInvalid('clinicAllocation')">Please select Clinic</mat-error>
-                      <br><br>
-                    </div>
-                  </div>
+                <div class="col-lg-3">
+                  <label>Select Clinc</label>
+                </div>
+                <div class="col-lg-9">
+                  <mat-select id="clinic" formControlName="clinicAllocation" class="form-control form-control-sm" placeholder="Select Clinic">
+                    <mat-option *ngFor="let clinicAllocation of clinicAllocations" [value]="clinicAllocation">
+                      {{clinicAllocation.id}} - {{clinicAllocation.clinicCreation.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="isFieldInvalid('clinicAllocation')">Please select Clinic</mat-error>
+                  <br><br>
+                </div>
+              </div>
 
 
               <div class="row">
@@ -65,12 +65,23 @@
 
               <div class="row">
 
-                 <div class="col-lg-3">
-                   <label>Weight(g)</label>
-                 </div>
-                 <div class="col-lg-9">
-                   <input type="number" formControlName="weight" id="weight" class=" form-control form-control-sm"><br>
-                 </div>
+                <div class="col-lg-3">
+                  <label>Weight(g)</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="number" formControlName="weight" id="weight" class=" form-control form-control-sm"><br>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Belly(cm)</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="number" formControlName="belly" class=" form-control form-control-sm"><br>
+                </div>
 
               </div>
 
@@ -81,82 +92,67 @@
                 <div class="col-lg-12">
 
                   <div class="row">
-                  <div class="col-lg-3">
-                  <label>Vaccination</label>
-                </div>
-                <div class="col-lg-9">
-                  <mat-select id="vaccination" formControlName="vaccination" placeholder="Select vaccine" class="form-control form-control-sm">
-                    <mat-option value="B.C.G">B.C.G</mat-option>
-                    <mat-option value="B.C.G 2nd dose">B.C.G 2nd dose</mat-option>
-                    <mat-option value="Pentavalent 1">Pentavalent 1</mat-option>
-                    <mat-option value="OPV 1">OPV 1</mat-option>
-                    <mat-option value="Pentavalent 2">Pentavalent 2</mat-option>
-                    <mat-option value="OPV 2">OPV 2</mat-option>
-                    <mat-option value="IPV">IPV</mat-option>
-                    <mat-option value="Pentavalent 3">Pentavalent 3</mat-option>
-                    <mat-option value="OPV 3">OPV 3</mat-option>
-                    <mat-option value="MMR 1">MMR 1</mat-option>
-                    <mat-option value="Live JE">Live JE</mat-option>
-                    <mat-option value="DPT">DPT</mat-option>
-                    <mat-option value="OPV 4">OPV 4</mat-option>
-                    <mat-option value="MMR 2">MMR 2</mat-option>
-                    <mat-option value="D.T">D.T</mat-option>
-                    <mat-option value="OPV 5">OPV 5</mat-option>
-                    <mat-option value="aTD">aTD</mat-option>
-                  </mat-select><br>
-                </div>
+                    <div class="col-lg-3">
+                      <label>Vaccination</label>
+                    </div>
+                    <div class="col-lg-9">
+                      <mat-select id="vaccinationAndMedicine" formControlName="vaccinationAndMedicine" placeholder="Select vaccine" class="form-control form-control-sm">
+                        <mat-option value="Tetanus">Tetanus</mat-option>
+                        <mat-option value="folic Acid">Folic Acid</mat-option>
+                      </mat-select><br>
+                    </div>
                   </div>
 
-                <div class="row">
-                  <div class="col-lg-9 offset-3">
-                    <input type="text" formControlName="vaccination" placeholder="Other" class=" form-control form-control-sm"><br>
+                  <div class="row">
+                    <div class="col-lg-9 offset-3">
+                      <input type="text" formControlName="vaccinationAndMedicine" placeholder="Other" class=" form-control form-control-sm"><br>
+                    </div>
                   </div>
-                </div>
 
                 </div>
 
               </div>
 
 
+              <div class="row">
+
+                <div class="col-lg-12">
+
                   <div class="row">
-
-                    <div class="col-lg-12">
-
-                      <div class="row">
-                        <div class="col-lg-3">
-                          <label>Diseases</label>
-                        </div>
-                        <div class="col-lg-9">
-                          <mat-select formControlName="disease" placeholder="Select Disease" class="form-control form-control-sm">
-                            <mat-option value="Size of eye">Size of eye</mat-option>
-                            <mat-option value="Cataract">Cataract</mat-option>
-                            <mat-option value="Corneal Opacity">Corneal Opacity</mat-option>
-                            <mat-option value="Heart Disease">Heart Disease</mat-option>
-                            <mat-option value="Lung Disease">Lung Disease</mat-option>
-                          </mat-select><br>
-                        </div>
-                      </div>
-
-                      <div class="row">
-                        <div class="col-lg-9 offset-3">
-                          <input type="text" formControlName="disease" placeholder="Other" class=" form-control form-control-sm"><br>
-                        </div>
-                      </div>
-
+                    <div class="col-lg-3">
+                      <label>Diseases</label>
                     </div>
-
+                    <div class="col-lg-9">
+                      <mat-select formControlName="disease" placeholder="Select Disease" class="form-control form-control-sm">
+                        <mat-option value="Blood Sugar">Blood Sugar</mat-option>
+                        <mat-option value="Blood Preasure">Blood Preasure</mat-option>
+                        <mat-option value="Heart Disease">Heart Disease</mat-option>
+                        <mat-option value="Lung Disease">Lung Disease</mat-option>
+                        <mat-option value="Dental Disease">Dental Disease</mat-option>
+                      </mat-select><br>
+                    </div>
                   </div>
 
                   <div class="row">
-
-                    <div class="col-lg-3">
-                      <label>Thriposha Issue</label>
+                    <div class="col-lg-9 offset-3">
+                      <input type="text" formControlName="disease" placeholder="Other" class=" form-control form-control-sm"><br>
                     </div>
-                    <div class="col-lg-9">
-                      <input type="checkbox" value="Issued" name="thriposha" formControlName="thriposha"> Issued<br>
-                     </div>
+                  </div>
 
-                  </div><br>
+                </div>
+
+              </div>
+
+              <div class="row">
+
+                <div class="col-lg-3">
+                  <label>Thriposha Issue</label>
+                </div>
+                <div class="col-lg-9">
+                  <input type="checkbox" value="Issued" name="thriposha" formControlName="thriposha"> Issued<br>
+                </div>
+
+              </div><br>
 
 
               <div class="row">
@@ -177,7 +173,7 @@
         </div>
 
 
-<!--=========== Chart ==============================================================-->
+        <!--=========== Chart ==============================================================-->
         <div class="col-lg-7">
 
 
@@ -205,7 +201,7 @@
 
       </div>
 
-<!--========== table ==============================================================-->
+      <!--========== table ==============================================================-->
 
 
 

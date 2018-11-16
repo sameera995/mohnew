@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {setTheme} from "ngx-bootstrap";
+import {AuthenticationService} from "./auth/authentication.service";
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,11 @@ import {setTheme} from "ngx-bootstrap";
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  constructor(){
+  constructor(private authService: AuthenticationService) {
     setTheme('bs4');
+  }
+
+  isAuthenticated() {
+    return this.authService.isAuthenticated()
   }
 }

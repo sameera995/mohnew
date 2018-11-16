@@ -67,11 +67,24 @@
               <div class="row" style="padding-bottom: 5px;">
 
                 <div class="col-lg-3">
-                  <label style="padding-top: 15px;">Time</label>
+                  <label style="padding-top: 15px;">Start Time</label>
                 </div>
                 <div class="col-lg-9">
-                  <timepicker formControlName="time" id="time"></timepicker>
-                  <mat-error *ngIf="isFieldInvalid('time')">Please insert Time</mat-error>
+                  <timepicker formControlName="startTime" id="startTime"></timepicker>
+                  <mat-error *ngIf="isFieldInvalid('startTime')">Please insert Star Time</mat-error>
+                </div>
+              </div>
+
+
+              <div class="row" style="padding-bottom: 5px;">
+
+                <div class="col-lg-3">
+                  <label style="padding-top: 15px;">End Time</label>
+                </div>
+                <div class="col-lg-9">
+                  <timepicker formControlName="endTime" id="endTime"></timepicker>
+                  <button class="btn btn-outline-info" (click)="loadAvailableEmployee()">Check Employee Availability</button>
+                  <mat-error *ngIf="isFieldInvalid('endTime')">Please insert End Time</mat-error>
                 </div>
               </div>
 
@@ -131,7 +144,7 @@
                   <label>Status</label>
                 </div>
                 <div class="col-lg-9">
-                  <mat-select formControlName="status" multiple class="form-control form-control-sm" >
+                  <mat-select formControlName="status" class="form-control form-control-sm" >
                     <mat-option value="Active">Active</mat-option>
                     <mat-option value="Inactive">Inactive</mat-option>
                   </mat-select>
@@ -217,9 +230,14 @@
                 <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.date}}</td>
               </ng-container>
 
-              <ng-container matColumnDef="time">
-                <th mat-header-cell *matHeaderCellDef><h6>Time</h6></th>
-                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.time}}</td>
+              <ng-container matColumnDef="startTime">
+                <th mat-header-cell *matHeaderCellDef><h6>Start Time</h6></th>
+                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.startTime}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="endTime">
+                <th mat-header-cell *matHeaderCellDef><h6>End Time</h6></th>
+                <td mat-cell *matCellDef="let clinicAllocation">{{clinicAllocation.endTime}}</td>
               </ng-container>
 
               <ng-container matColumnDef="place">
@@ -230,8 +248,9 @@
               <ng-container matColumnDef="employee">
                 <th mat-header-cell *matHeaderCellDef><h6>Employee</h6></th>
                 <td mat-cell *matCellDef="let clinicAllocation">
-                  <!--<span *ngFor="let employee of clinicAllocation">-->
-                  <!--{{employee.name}}</span>-->
+                  <ng-container *ngFor="let employee of clinicAllocation.employee">
+                  {{employee.name}}<br>
+                  </ng-container>
                 </td>
               </ng-container>
 

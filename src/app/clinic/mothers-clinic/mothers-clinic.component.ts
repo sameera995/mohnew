@@ -1,26 +1,24 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {MatPaginator, MatTableDataSource} from "@angular/material";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {AreaService} from "../service/area.service";
-import {EmployeeService} from "../service/employee.service";
-import {ClinicAllocationService} from "../service/clinic-allocation.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {AreaService} from "../../service/area.service";
+import {EmployeeService} from "../../service/employee.service";
+import {ClinicAllocationService} from "../../service/clinic-allocation.service";
+import {PersonService} from "../../service/person.service";
 import {HttpClient} from "@angular/common/http";
-import {Clinic} from "./Clinic";
-import {PersonService} from "../service/person.service";
-import {Person} from "../person/Person";
-import {ClinicService} from "../service/clinic.service";
-import {ClinicAllocation} from "./clinic-allocation/ClinicAllocation";
-import {DataSet} from "./data-set";
+import {ClinicAllocation} from "../clinic-allocation/ClinicAllocation";
+import {Person} from "../../person/Person";
+import {MatPaginator, MatTableDataSource} from "@angular/material";
+import {DataSet} from "../data-set";
+import {MothersClinic} from "./MothersClinic";
+import {MothersClinicService} from "../../service/mothers-clinic.service";
 
 @Component({
-  selector: 'app-clinic',
-  templateUrl: './clinic.component.html',
-  styleUrls: ['./clinic.component.css']
+  selector: 'app-mothers-clinic',
+  templateUrl: './mothers-clinic.component.html',
+  styleUrls: ['./mothers-clinic.component.css']
 })
-export class ClinicComponent implements OnInit {
-
-  modalRef: BsModalRef;
+export class MothersClinicComponent implements OnInit {
 
   dataSet: DataSet[] = [
     {data: [2000, 2700, 3500, 4000, 4500, 4800, 5100, 5400, 5600, 5800, 6000, 6100, 6300], label: 'Min Weight'},
@@ -33,35 +31,32 @@ export class ClinicComponent implements OnInit {
               private employeeService: EmployeeService,
               private clinicAllocationService: ClinicAllocationService,
               private personService: PersonService,
-              private clinicService: ClinicService,
+              private mothersClinicService: MothersClinicService,
               private http: HttpClient,) {
   }
 
-  private formSubmitAttempt: boolean;
+  private formSubmitAttempt:boolean;
+  modalRef: BsModalRef;
 
   form: FormGroup;
   searchForm: FormGroup;
   clinicAllocations: ClinicAllocation[];
-  clinics: Clinic[];
+  mothersClinic: MothersClinic[];
   persons: Person[];
 
-
   displayedColumns: string[] = ['date', 'height', 'weight', 'vaccination', 'disease', 'thriposha'];
-  dataSource: MatTableDataSource<Clinic>;
+  dataSource: MatTableDataSource<MothersClinic>;
 
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.formControl();
-    this.loadAllocatedClinics();
-    // this.personService.findAllByPersonStatusAndType("Active",'Baby').subscribe(value => this.persons = value);
+    // this.personService.findAllByPersonStatusAndType("Active",'0').subscribe(value => this.persons = value);
     this.personService.findAllByPersonStatus("Active").subscribe(value => this.persons = value);
-    this.clinicService.findAll().subscribe(clinic => this.loadData(clinic));
-
-    // this.loadWeightReport("4");
+    this.mothersClinicService.findAll().subscribe(mothersClinic => this.loadData(mothersClinic));
+    this.loadAllocatedClinics();
   }
-
 
   formControl() {
     this.form = this.formBuilder.group({
@@ -70,20 +65,16 @@ export class ClinicComponent implements OnInit {
       "clinicAllocation": null,
       'height': [null],
       'weight': [null],
-      'vaccination': [null],
-      'thriposha': null,
+      'belly':[null],
+      'vaccinationAndMedicine': [null],
+      'thriposha': [null],
       'disease': [null]
 
     });
   }
 
-
-  public get personValue() {
-    return this.form.get("person") as FormControl;
-  }
-
-  loadData(clinic: Clinic[]) {
-    this.dataSource = new MatTableDataSource(clinic);
+  loadData(mothersClinic: MothersClinic[]) {
+    this.dataSource = new MatTableDataSource(mothersClinic);
     this.dataSource.paginator = this.paginator;
   }
 
@@ -98,22 +89,13 @@ export class ClinicComponent implements OnInit {
     );
   }
 
-  loadWeightReport(person :Person) {
-    this.personService.getWieghtReport(person.id).subscribe(value => {
-      console.log(value);
-      this.dataSet.push(value);
-    });
-    this.clinicService.findByPerson(person.id).subscribe(clinic => this.loadData(clinic));
-  }
-
-
   onSubmit() {
     this.modalRef.hide();
     // this.touch(["clinicCreation","employee","area","date","time","place"]);
     // if (this.form.valid) {
     console.log(this.form.value);
     this.http.put('http://localhost:8080/clinics', this.form.value).subscribe(value => {
-      this.clinicService.findAll().subscribe(clinic => this.loadData(clinic));
+      this.mothersClinicService.findAll().subscribe(mothersClinic => this.loadData(mothersClinic));
     });
     this.form.reset();
     // }
@@ -123,41 +105,14 @@ export class ClinicComponent implements OnInit {
     // }
   }
 
+  loadWeightReport(person :Person) {
+    this.personService.getWieghtReport(person.id).subscribe(value => {
+      console.log(value);
+      this.dataSet.push(value);
+    });
+    this.mothersClinicService.findByPerson(person.id).subscribe(mothersClinic => this.loadData(mothersClinic));
+  }
 
-  //
-  // fillForm(clinicAllocation: ClinicAllocation) {
-  //   this.form.patchValue({
-  //     'id': clinicAllocation.id,
-  //     'clinicCreation': clinicAllocation.clinicCreation.name,
-  //     'employee': clinicAllocation.employee,
-  //     'area': clinicAllocation.area.name,
-  //     'date': clinicAllocation.date,
-  //     'time': clinicAllocation.time,
-  //     'place': clinicAllocation.place,
-  //     'description': clinicAllocation.description
-  //   });
-  //   // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
-  // }
-  //
-  //
-  // onDelete(id: string) {
-  //   console.log(this.form.value);
-  //   this.modalRef.hide();
-  //   this.http.delete('http://localhost:8080/clinicallocs/' + id, this.form.value).subscribe(value => {
-  //     this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
-  //   });
-  // }
-  //
-  // onClear() {
-  //   this.modalRef.hide();
-  //   this.form.reset();
-  // }
-  //
-  // onSearchClear(){
-  //   this.searchForm.reset();
-  //   this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
-  // }
-  //
   search() {
     console.log(this.searchForm.value);
     if (this.searchForm.value != "") {
@@ -189,5 +144,7 @@ export class ClinicComponent implements OnInit {
   onModelNo(): void {
     this.modalRef.hide();
   }
+
+
 
 }

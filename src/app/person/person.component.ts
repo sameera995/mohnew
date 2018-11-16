@@ -1,9 +1,8 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {HttpClient} from "@angular/common/http";
 import {PersonTypeService} from "../service/person-type.service";
-import {Gender} from "../employee/employee.component";
 import {GenderService} from "../service/gender.service";
 import {Person} from "./Person";
 import {MatPaginator, MatTableDataSource} from "@angular/material";
@@ -19,38 +18,38 @@ import {Area} from "../area/Area";
 export class PersonComponent implements OnInit {
 
   constructor(
-    private fb : FormBuilder,
-    private modalService : BsModalService,
-    private http:HttpClient,
-    private personTypeService:PersonTypeService,
-    private genderService:GenderService,
-    private personService:PersonService,
-    private areaService:AreaService
-  ) { }
+    private fb: FormBuilder,
+    private modalService: BsModalService,
+    private http: HttpClient,
+    private personTypeService: PersonTypeService,
+    private genderService: GenderService,
+    private personService: PersonService,
+    private areaService: AreaService
+  ) {
+  }
 
-  form:FormGroup;
-  searchForm:FormGroup;
-  personTypes:string[];
-  genders:string[];
-  areas:Area[];
+  form: FormGroup;
+  searchForm: FormGroup;
+  personTypes: string[];
+  genders: string[];
+  areas: Area[];
 
-  modalRef:BsModalRef;
+  modalRef: BsModalRef;
 
-  displayedColumns: string[] = ['name', 'gender', 'address', 'personType','personStatus','action'];
+  displayedColumns: string[] = ['name', 'gender', 'address', 'personType', 'personStatus', 'action'];
   dataSource: MatTableDataSource<Person>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  private formSubmitAttempt : boolean;
+  private formSubmitAttempt: boolean;
 
 
-  ngOnInit(){
+  ngOnInit() {
     this.formControl();
     this.personService.findAll().subscribe(person => this.loadData(person));
     this.loadGender();
     this.loadPersonTypes();
     this.loadArea();
-    // this.form.controls['personStatus'].disable();
     // this.loadPhiArea();
     // this.loadPhmArea();
 
@@ -58,7 +57,7 @@ export class PersonComponent implements OnInit {
 
 
   formControl() {
-    this.form= this.fb.group({
+    this.form = this.fb.group({
       'id': null,
       'name': [null, Validators.required],
       'gender': [null, Validators.required],
@@ -74,28 +73,29 @@ export class PersonComponent implements OnInit {
 
     });
 
-    this.searchForm= this.fb.group({
+    this.searchForm = this.fb.group({
       'name': null,
       // 'area': null
     });
   }
 
-  loadData(person : Person[]){
+  loadData(person: Person[]) {
     this.dataSource = new MatTableDataSource(person);
     this.dataSource.paginator = this.paginator;
   }
 
-  loadPersonTypes(){
+  loadPersonTypes() {
     this.personTypeService.findAll().subscribe(value => {
       console.log(value);
       this.personTypes = value
     });
   }
 
-  loadGender(){
+  loadGender() {
     this.genderService.findAll().subscribe(value => {
       console.log(value);
-      this.genders = value;})
+      this.genders = value;
+    })
   }
 
   // loadPhiArea(){
@@ -108,14 +108,15 @@ export class PersonComponent implements OnInit {
   //     this.phmareas = value;})
   // }
 
-  loadArea(){
+  loadArea() {
     this.areaService.findAll().subscribe(value => {
-      this.areas = value;})
+      this.areas = value;
+    })
   }
 
-  fillForm(person: Person){
+  fillForm(person: Person) {
     this.form.patchValue({
-      'id':person.id,
+      'id': person.id,
       'name': person.name,
       'gender': person.gender,
       'dob': person.dob,
@@ -131,7 +132,7 @@ export class PersonComponent implements OnInit {
     // alert(`Thanks for submitting! Data: ${JSON.stringify(this.employees)}`);
   }
 
-  onSubmit(){
+  onSubmit() {
     this.modalRef.hide();
     this.form.patchValue({
       "dob": this.convertDateToString(this.form.get("dob").value)
@@ -144,15 +145,16 @@ export class PersonComponent implements OnInit {
     this.form.reset();
   }
 
-  onClear(){
+  onClear() {
     this.modalRef.hide();
     this.form.reset();
   }
 
   search() {
     console.log(this.searchForm.value);
-    if (this.searchForm.value != ""){
-      this.personService.search(this.searchForm.value).subscribe(person => this.loadData(person));}
+    if (this.searchForm.value != "") {
+      this.personService.search(this.searchForm.value).subscribe(person => this.loadData(person));
+    }
   }
 
   touch(controls: string[]) {
@@ -191,10 +193,12 @@ export class PersonComponent implements OnInit {
   openModalSave(template: TemplateRef<any>) {
     // this.touch(["name","gender","dob","address","contact","area","personType","personStatus"]);
     // if (this.form.valid) {
-      this.modalRef = this.modalService.show(template);}
-    // else {
-    //   window.alert("There are some errors in this page");
-    // }
+    this.modalRef = this.modalService.show(template);
+  }
+
+  // else {
+  //   window.alert("There are some errors in this page");
+  // }
   // }
 
   openModal(template: TemplateRef<any>) {

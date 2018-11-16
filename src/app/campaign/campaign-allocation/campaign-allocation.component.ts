@@ -40,13 +40,16 @@ export class CampaignAllocationComponent implements OnInit {
   employees: Employee[];
   campaignCreations:CampaignCreation[];
 
-  displayedColumns: string[] = ['name', 'area', 'date', 'time', 'place', 'employee', 'action'];
+  displayedColumns: string[] = ['name', 'area', 'date', 'startTime','endTime', 'place', 'employee','status', 'action'];
   dataSource: MatTableDataSource<CampaignAllocation>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.createForm();
+    this.campaignAllocationService.findAll().subscribe(campaignAllocation => this.loadData(campaignAllocation));
+    this.loadCreatedCampaigns();
+    this.loadArea();
   }
 
   createForm() {
@@ -55,10 +58,12 @@ export class CampaignAllocationComponent implements OnInit {
       'campaignCreation': [null, Validators.required],
       'area': [null, Validators.required],
       'date': [null, Validators.required],
-      'time': [null, Validators.required],
+      'startTime': [null, Validators.required],
+      'endTime': [null, Validators.required],
       'place': [null, Validators.required],
       'employee': [null, Validators.required],
-      'description': null
+      'description': null,
+      'status':null
 
     });
 
@@ -85,8 +90,14 @@ export class CampaignAllocationComponent implements OnInit {
     this.areaService.findAll().subscribe(value => this.areas = value);
   }
 
-  loadEmployee() {
-    this.employeeService.findAll().subscribe(value => this.employees = value)
+  loadAvailableEmployee() {
+    var date=this.convertDateToString(this.date.value);
+    var startTime=this.convertTimeToString(this.startTime.value);
+    var endTime=this.convertTimeToString(this.endTime.value);
+    this.employeeService.findAvailableEmplloyees(startTime,endTime,date).subscribe(value => {
+      console.log(value);
+      this.employees = value
+    });
   }
 
   isFieldInvalid(field: string) {
@@ -100,17 +111,22 @@ export class CampaignAllocationComponent implements OnInit {
     return this.form.get("date") as FormControl;
   }
 
-  public get time() {
-    return this.form.get("time") as FormControl;
+  public get startTime() {
+    return this.form.get("startTime") as FormControl;
+  }
+
+  public get endTime() {
+    return this.form.get("endTime") as FormControl;
   }
 
   onSubmit() {
     this.modalRef.hide();
     this.form.patchValue({
       "date": this.convertDateToString(this.date.value),
-      "time": this.convertTimeToString(this.time.value)
+      "startTime": this.convertTimeToString(this.startTime.value),
+      "endTime": this.convertTimeToString(this.endTime.value)
     });
-    this.touch(["campaignCreation","employee","area","date","time","place"]);
+    this.touch(["campaignCreation","employee","area","date","startTime","endTime","place","status"]);
     if (this.form.valid) {
       console.log(this.form.value);
       this.http.put('http://localhost:8080/campaignallocs', this.form.value).subscribe(value => {
@@ -131,9 +147,11 @@ export class CampaignAllocationComponent implements OnInit {
       'employee': campaignAllocation.employee,
       'area': campaignAllocation.area.name,
       'date': campaignAllocation.date,
-      'time': campaignAllocation.time,
+      'startTime': campaignAllocation.startTime,
+      'endTime':campaignAllocation.endTime,
       'place': campaignAllocation.place,
-      'description': campaignAllocation.description
+      'description': campaignAllocation.description,
+      'status':campaignAllocation.status
     });
   }
 
@@ -210,7 +228,7 @@ export class CampaignAllocationComponent implements OnInit {
 
   openModalSave(template: TemplateRef<any>) {
     console.log(this.form);
-    this.touch(["campaignCreation", "employee", "area", "date", "time", "place"]);
+    this.touch(["campaignCreation", "employee", "area", "date", "startTime", "endTime", "place","status"]);
     if (this.form.valid) {
       this.modalRef = this.modalService.show(template);
     }

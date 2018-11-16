@@ -78,12 +78,12 @@ export class EmployeeComponent implements OnInit {
       'nic': [null, [Validators.required, Validators.pattern(/^([0-9]{9}[x|X|v|V]|[0-9]{12})$/)]],
       'dob': [null, Validators.required],
       'address': [null, Validators.required],
-      'email': [null, [Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/)]],
+      'email': [null, [Validators.required, Validators.email]],
       'contact': [null, [Validators.required, Validators.pattern(/^[0][0-9]{9}$/)]],
       'civilStatus': [null, Validators.required],
       'designation': [null, Validators.required],
       'assignDate': [null, Validators.required],
-      'employeeStatus': [null, Validators.required],
+      'employeeStatus': [null, Validators.required]
     });
 
       this.searchForm = this.formBuilder.group({
@@ -189,6 +189,10 @@ export class EmployeeComponent implements OnInit {
     console.log(this.searchForm.value);
     if (this.searchForm.value != ""){
       this.employeeService.search(this.searchForm.value).subscribe(employee => this.loadData(employee));}
+  }
+
+  cancelSearch(){
+    this.employeeService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
   }
 
   // compareGenders = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;

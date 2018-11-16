@@ -1,4 +1,3 @@
-import {ClinicCreation} from "../../clinic/clinic-creation/ClinicCreation";
 import {Area} from "../../area/Area";
 import {Employee} from "../../employee/Employee";
 import {CampaignCreation} from "../campaign-creation/CampaignCreation";
@@ -8,8 +7,10 @@ export interface CampaignAllocation {
   campaignCreation:CampaignCreation;
   area:Area;
   date:string;
-  time:string;
+  startTime:string;
+  endTime:string;
   place:string;
   employee:Employee[];
   description:string;
+  status:string;
 }

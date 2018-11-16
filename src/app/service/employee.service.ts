@@ -21,6 +21,10 @@ export class EmployeeService {
     return this.http.get<Employee[]>(`${this.baseUrl}/employeeStatus/${employeeStatus}`);
   }
 
+  findAvailableEmplloyees(startTime:string, endTime:string, date:string){
+    return this.http.get<Employee[]>(`${this.baseUrl}/getAvailable`,{params:{date:date,startTime:startTime,endTime:endTime}});
+  }
+
   findByArea(area:string){
     return this.http.get<Employee[]>(`${this.baseUrl}/${area}`);
   }

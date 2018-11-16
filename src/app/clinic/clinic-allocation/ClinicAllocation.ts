@@ -7,7 +7,8 @@ export interface ClinicAllocation {
   clinicCreation:ClinicCreation;
   area:Area;
   date:string;
-  time:string;
+  startTime:string;
+  endTime:string;
   place:string;
   employee:Employee[];
   description:string;

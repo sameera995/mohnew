@@ -7,7 +7,6 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MainWindowComponent } from './main-window/main-window.component';
-import { LoginComponent } from './login/login.component';
 
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
@@ -77,6 +76,12 @@ import {JwtModule} from "@auth0/angular-jwt";
 import {RouterModule} from "@angular/router";
 import { CampaignAllocationComponent } from './campaign/campaign-allocation/campaign-allocation.component';
 import { CampaignCreationComponent } from './campaign/campaign-creation/campaign-creation.component';
+import {AuthModule} from "./auth/auth.module";
+import {LoginComponent} from "./auth/login/login.component";
+import { MainComponent } from './main/main.component';
+import {NgSelectModule} from "@ng-select/ng-select";
+import { MothersClinicComponent } from './clinic/mothers-clinic/mothers-clinic.component';
+import { ReportComponent } from './report/report.component';
 
 
 const jwtConfig = {
@@ -126,19 +131,20 @@ const jwtConfig = {
     MatTooltipModule,
     MatTreeModule
   ],
-  declarations: [],
+  declarations: []
 })
 
 export class DemoMaterialModule {}
 @NgModule({
   declarations: [
     HomeComponent,
+    MainComponent,
+
     AppComponent,
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
     MainWindowComponent,
-    LoginComponent,
     EmployeeComponent,
     ModalComponent,
     AboutComponent,
@@ -149,7 +155,9 @@ export class DemoMaterialModule {}
     PersonComponent,
     UserComponent,
     CampaignComponent,CampaignAllocationComponent,
-    CampaignCreationComponent
+    CampaignCreationComponent,
+    MothersClinicComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
@@ -174,7 +182,9 @@ export class DemoMaterialModule {}
     FormsModule,
     ReactiveFormsModule,
     AlertModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    AuthModule,
+    NgSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

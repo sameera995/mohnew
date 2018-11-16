@@ -40,7 +40,7 @@ export class ClinicAllocationComponent implements OnInit {
   areas: Area[];
   employees: Employee[];
 
-  displayedColumns: string[] = ['name', 'area', 'date', 'time', 'place', 'employee','status', 'action'];
+  displayedColumns: string[] = ['name', 'area', 'date', 'startTime','endTime', 'place', 'employee','status', 'action'];
   dataSource: MatTableDataSource<ClinicAllocation>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -50,7 +50,6 @@ export class ClinicAllocationComponent implements OnInit {
     this.createForm();
     this.clinicAllocationService.findAll().subscribe(clinicAllocation => this.loadData(clinicAllocation));
     this.loadCreatedClinics();
-    this.loadEmployee();
     this.loadArea();
   }
 
@@ -60,7 +59,8 @@ export class ClinicAllocationComponent implements OnInit {
       'clinicCreation': [null, Validators.required],
       'area': [null, Validators.required],
       'date': [null, Validators.required],
-      'time': [null, Validators.required],
+      'startTime': [null, Validators.required],
+      'endTime': [null, Validators.required],
       'place': [null, Validators.required],
       'employee': [null, Validators.required],
       'description': null,
@@ -91,8 +91,14 @@ export class ClinicAllocationComponent implements OnInit {
     this.areaService.findAll().subscribe(value => this.areas = value);
   }
 
-  loadEmployee() {
-    this.employeeService.findAllByEmployeeStatus("Active").subscribe(value => this.employees = value)
+  loadAvailableEmployee() {
+    var date=this.convertDateToString(this.date.value);
+    var startTime=this.convertTimeToString(this.startTime.value);
+    var endTime=this.convertTimeToString(this.endTime.value);
+    this.employeeService.findAvailableEmplloyees(startTime,endTime,date).subscribe(value => {
+      console.log(value);
+      this.employees = value
+    });
   }
 
   isFieldInvalid(field: string) {
@@ -106,17 +112,22 @@ export class ClinicAllocationComponent implements OnInit {
     return this.clinicAllocForm.get("date") as FormControl;
   }
 
-  public get time() {
-    return this.clinicAllocForm.get("time") as FormControl;
+  public get startTime() {
+    return this.clinicAllocForm.get("startTime") as FormControl;
+  }
+
+  public get endTime() {
+    return this.clinicAllocForm.get("endTime") as FormControl;
   }
 
   onSubmit() {
     this.modalRef.hide();
     this.clinicAllocForm.patchValue({
       "date": this.convertDateToString(this.date.value),
-      "time": this.convertTimeToString(this.time.value)
+      "startTime": this.convertTimeToString(this.startTime.value),
+      "endTime": this.convertTimeToString(this.endTime.value)
     });
-    this.touch(["clinicCreation","employee","area","date","time","place","status"]);
+    this.touch(["clinicCreation","employee","area","date","startTime","endTime","place","status"]);
     if (this.clinicAllocForm.valid) {
     console.log(this.clinicAllocForm.value);
     this.http.put('http://localhost:8080/clinicallocs', this.clinicAllocForm.value).subscribe(value => {
@@ -137,7 +148,8 @@ export class ClinicAllocationComponent implements OnInit {
       'employee': clinicAllocation.employee,
       'area': clinicAllocation.area.name,
       'date': clinicAllocation.date,
-      'time': clinicAllocation.time,
+      'startTime': clinicAllocation.startTime,
+      'endTime': clinicAllocation.endTime,
       'place': clinicAllocation.place,
       'description': clinicAllocation.description,
       'status':clinicAllocation.status
@@ -208,9 +220,14 @@ export class ClinicAllocationComponent implements OnInit {
 
   openModalSave(template: TemplateRef<any>) {
     console.log(this.clinicAllocForm);
-    this.touch(["clinicCreation", "employee", "area", "date", "time", "place"]);
+    this.touch(["clinicCreation", "employee", "area", "date", "startTime",'endTime', "place"]);
     if (this.clinicAllocForm.valid) {
+      if (this.startTime.value<this.endTime.value){
       this.modalRef = this.modalService.show(template);
+      }
+      else {
+        window.alert("End time should be greater than start time");
+      }
     }
     else {
       window.alert("There are some errors in this page");

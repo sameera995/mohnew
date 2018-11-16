@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {debounceTime, map} from "rxjs/operators";
 import {JwtHelperService} from "@auth0/angular-jwt";
+
 
 export interface ApiResponse {
   success: string;
@@ -9,19 +10,19 @@ export interface ApiResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthenticationService {
 
-  baseUrl: string = 'http://localhost:8080/auth';
+  url: string = "http://localhost:8080/auth";
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
   }
 
   logIn(username: string, password: string) {
-    return this.http.post(`${this.baseUrl}/login`  , {username, password})
+    return this.http.post(`${this.url}/login`, {username, password})
       .pipe(
-        map(value => this.setTokenToSession(value['token'])
+        map(value => this.setTokenToSession(value["token"])
         )
       );
   }
@@ -41,31 +42,35 @@ export class AuthenticationService {
     return token != null && !this.jwtHelper.isTokenExpired(token);
   }
 
-  isAuthorized() {
-
+  isAuthorized(role: string) {
+    return sessionStorage.getItem("roles").includes(role);
   }
 
   getUsernameFromToken() {
-    return this.jwtHelper.decodeToken(sessionStorage.getItem('token')).username;
+    return this.jwtHelper.decodeToken(sessionStorage.getItem("token")).username;
+  }
+
+  getUserIdFromToken() {
+    return this.jwtHelper.decodeToken(sessionStorage.getItem("token")).id;
   }
 
   changePassword(username: string, password: string) {
-    return this.http.post(`${this.baseUrl}/changePassword`,{username: username, password: password});
+    return this.http.post(`${this.url}/changePassword`, {username: username, password: password});
 
   }
 
   matchPasswords(username: string, password: string) {
-    return this.http.post(`${this.baseUrl}/matchPasswords`, {username: username, password: password})
+    return this.http.post(`${this.url}/matchPasswords`, {username: username, password: password})
       .pipe(
         debounceTime(2000),
       );
   }
 
   lockAccount(username: string) {
-    return this.http.post<ApiResponse>(`${this.baseUrl}/lock`, {username: username});
+    return this.http.post<ApiResponse>(`${this.url}/lock`, {username: username});
   }
 
   checkUsername(username: string) {
-    return this.http.post<ApiResponse>(`${this.baseUrl}/checkUsername`, username);
+    return this.http.post<ApiResponse>(`${this.url}/checkUsername`, username);
   }
 }
