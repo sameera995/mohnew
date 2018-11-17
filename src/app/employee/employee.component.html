@@ -69,7 +69,7 @@
         <label>Date of Birth<span style="color: red">*</span></label>
       </div>
       <div class="col-lg-9 col-sm-12">
-        <input class=" form-control form-control-sm" formControlName="dob" bsDatepicker required>
+        <input class=" form-control form-control-sm" formControlName="dob" bsDatepicker required [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}">
         <mat-error *ngIf="isFieldInvalid('dob')">Please insert correct Date of Birth</mat-error>
       </div>
 
@@ -165,7 +165,7 @@
         <label>Assign Date<span style="color: red">*</span></label>
       </div>
       <div class="col-lg-9 col-sm-12">
-        <input class=" form-control form-control-sm" formControlName="assignDate" required bsDatepicker>
+        <input class=" form-control form-control-sm" formControlName="assignDate" required bsDatepicker [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}">
         <mat-error *ngIf="isFieldInvalid('assignDate')">Please insert correct Assign Date</mat-error>
       </div>
 

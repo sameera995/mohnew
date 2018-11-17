@@ -22,8 +22,7 @@
                   <label>Select Clinc</label>
                 </div>
                 <div class="col-lg-9">
-                  <mat-select id="clinic" formControlName="clinicCreation" class="form-control form-control-sm">
-                    <mat-option value="null" disabled>Select Clinic</mat-option>
+                  <mat-select id="clinic" formControlName="clinicCreation" class="form-control form-control-sm" placeholder="Select Created Clinic" [compareWith]="compareClinic">
                     <mat-option *ngFor="let clinicCreation of clinicCreations" [value]="clinicCreation">
                       {{clinicCreation.name}}
                     </mat-option>
@@ -39,10 +38,9 @@
                   <label>Select Area</label>
                 </div>
                 <div class="col-lg-9">
-                  <mat-select id="area" formControlName="area" class="form-control form-control-sm">
-                    <mat-option value="null" disabled>Select Area</mat-option>
+                  <mat-select id="area" formControlName="area" class="form-control form-control-sm" placeholder="Select Areas" [compareWith]="compareAreas">
                     <mat-option *ngFor="let area of areas" [value]="area">
-                      {{area.name}}
+                      {{area.name}} - {{area.areaType}}
                     </mat-option>
                   </mat-select>
                   <mat-error *ngIf="isFieldInvalid('area')">Please insert Area</mat-error>
@@ -56,7 +54,7 @@
                   <label>Date<span style="color: red">*</span></label>
                 </div>
                 <div class="col-lg-9 col-sm-12">
-                  <input class=" form-control form-control-sm" id="date" formControlName="date" bsDatepicker required>
+                  <input class=" form-control form-control-sm" id="date" formControlName="date" bsDatepicker [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" required>
                   <mat-error *ngIf="isFieldInvalid('date')">Please insert correct Date</mat-error>
                   <br>
                 </div>
@@ -114,8 +112,7 @@
                   <!--</option>-->
                   <!--</select><br>-->
 
-                  <mat-select formControlName="employee" multiple class="form-control form-control-sm"
-                      [compareWith]="compareEmployees">
+                  <mat-select formControlName="employee" multiple class="form-control form-control-sm" [compareWith]="compareEmployees" placeholder="Select Employees">
                     <mat-option *ngFor="let employee of employees" [value]="employee">
                       {{employee.name}}
                     </mat-option>

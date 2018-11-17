@@ -34,7 +34,7 @@ const appRoutes: Routes = [
       {path: 'campaigncr', component: CampaignCreationComponent},
       {path: 'campaignalloc', component: CampaignAllocationComponent},
       {path: 'mothersclinic', component: MothersClinicComponent},
-      {path: 'report', component: ReportComponent}
+      {path: 'report', component: ReportComponent},
     ]
   },
 ];

@@ -92,13 +92,18 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   loadAvailableEmployee() {
-    var date=this.convertDateToString(this.date.value);
-    var startTime=this.convertTimeToString(this.startTime.value);
-    var endTime=this.convertTimeToString(this.endTime.value);
-    this.employeeService.findAvailableEmplloyees(startTime,endTime,date).subscribe(value => {
-      console.log(value);
-      this.employees = value
-    });
+
+      var date = this.convertDateToString(this.date.value);
+      var startTime = this.convertTimeToString(this.startTime.value);
+      var endTime = this.convertTimeToString(this.endTime.value);
+    if (date == null||startTime==null||endTime==null) {
+      window.alert("Start Time, End Time and Date Should be filled");
+    }else {
+      this.employeeService.findAvailableEmplloyees(startTime, endTime, date).subscribe(value => {
+        console.log(value);
+        this.employees = value
+      });
+    }
   }
 
   isFieldInvalid(field: string) {
@@ -142,6 +147,9 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   fillForm(clinicAllocation: ClinicAllocation) {
+    this.employeeService.findAll().subscribe(value => {
+      console.log(value);
+      this.employees = value});
     this.clinicAllocForm.patchValue({
       'id': clinicAllocation.id,
       'clinicCreation': clinicAllocation.clinicCreation.name,
@@ -243,4 +251,8 @@ export class ClinicAllocationComponent implements OnInit {
   }
 
   compareEmployees = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
+
+  compareClinic = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
+
+  compareAreas = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
 }

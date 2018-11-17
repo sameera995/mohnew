@@ -53,7 +53,7 @@
                 <label>Date of Birth<span style="color: red">*</span></label>
               </div>
               <div class="col-lg-9 col-sm-12">
-                <input class=" form-control form-control-sm" formControlName="dob" bsDatepicker required>
+                <input class=" form-control form-control-sm" formControlName="dob" bsDatepicker [bsConfig]="{dateInputFormat: 'YYYY-MM-DD'}" required>
                 <mat-error *ngIf="isFieldInvalid('dob')">Please insert correct Date of Birth</mat-error>
               </div>
 
@@ -96,8 +96,7 @@
               </div>
               <div class="col-lg-9 col-sm-12">
                 <mat-select class="form-control form-control-sm" multiple formControlName="area"
-                            placeholder="Select Area">
-                  <!--[compareWith]="compareCivilStatus">-->
+                            placeholder="Select Area" [compareWith]="compareAreas">
                   <mat-option *ngFor="let area of areas" [value]="area">
                     {{area.name}} - {{area.areaType}}
                   </mat-option>

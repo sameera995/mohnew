@@ -63,7 +63,7 @@ export class PersonComponent implements OnInit {
       'gender': [null, Validators.required],
       'dob': [null, Validators.required],
       'address': [null, Validators.required],
-      'contact': [null, Validators.required],
+      'contact': [null, [Validators.required, Validators.pattern(/^[0][0-9]{9}$/)]],
       'area': [null, Validators.required],
       'personType': [null, Validators.required],
       'parentName': null,
@@ -97,6 +97,8 @@ export class PersonComponent implements OnInit {
       this.genders = value;
     })
   }
+
+  compareAreas = (o1: any, o2: any) => o1 && o2 ? o1.id === o2.id : o1 === o2;
 
   // loadPhiArea(){
   //   this.areaService.findAllByAreaType("PHI_Area").subscribe(value => {

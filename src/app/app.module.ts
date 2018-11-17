@@ -154,7 +154,8 @@ export class DemoMaterialModule {}
     ClinicCreationComponent,
     PersonComponent,
     UserComponent,
-    CampaignComponent,CampaignAllocationComponent,
+    CampaignComponent,
+    CampaignAllocationComponent,
     CampaignCreationComponent,
     MothersClinicComponent,
     ReportComponent

@@ -94,10 +94,14 @@ export class CampaignAllocationComponent implements OnInit {
     var date=this.convertDateToString(this.date.value);
     var startTime=this.convertTimeToString(this.startTime.value);
     var endTime=this.convertTimeToString(this.endTime.value);
-    this.employeeService.findAvailableEmplloyees(startTime,endTime,date).subscribe(value => {
-      console.log(value);
-      this.employees = value
-    });
+    if (date == null||startTime==null||endTime==null) {
+      window.alert("Start Time, End Time and Date Should be filled");
+    }else {
+      this.employeeService.findAvailableEmplloyees(startTime, endTime, date).subscribe(value => {
+        console.log(value);
+        this.employees = value
+      });
+    }
   }
 
   isFieldInvalid(field: string) {

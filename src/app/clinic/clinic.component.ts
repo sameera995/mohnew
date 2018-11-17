@@ -55,11 +55,11 @@ export class ClinicComponent implements OnInit {
   ngOnInit() {
     this.formControl();
     this.loadAllocatedClinics();
-    // this.personService.findAllByPersonStatusAndType("Active",'Baby').subscribe(value => this.persons = value);
-    this.personService.findAllByPersonStatus("Active").subscribe(value => this.persons = value);
+    this.personService.findAllByPersonStatusAndType("Active",'Baby').subscribe(value => this.persons = value);
+    // this.personService.findAllByPersonStatus("Active").subscribe(value => this.persons = value);
     this.clinicService.findAll().subscribe(clinic => this.loadData(clinic));
 
-    // this.loadWeightReport("4");
+    this.loadWeightReport("1");
   }
 
 
@@ -98,12 +98,12 @@ export class ClinicComponent implements OnInit {
     );
   }
 
-  loadWeightReport(person :Person) {
-    this.personService.getWieghtReport(person.id).subscribe(value => {
+  loadWeightReport(id: string) {
+    this.personService.getWieghtReport(id).subscribe(value => {
       console.log(value);
       this.dataSet.push(value);
     });
-    this.clinicService.findByPerson(person.id).subscribe(clinic => this.loadData(clinic));
+    this.clinicService.findByPerson(id).subscribe(clinic => this.loadData(clinic));
   }
 
 
